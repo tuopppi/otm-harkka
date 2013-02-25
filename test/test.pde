@@ -15,13 +15,23 @@ void draw() {
 /* -------------------------------- */
 
 void mouseReleased() {
-  tw.hide_info();
+//tw.upgrade();
+
+  
+
 }
 
 void mousePressed() {
-  tw.lock();
-  tw.show_info();
-  tw.upgrade();
+  if(tw.is_locked()) {  
+    if(tw.clicked(mouseX, mouseY)) {
+      tw.show_info();
+    }
+  } else {
+    tw.lock();
+  }
+  
+    
+   
 }
 
 /* -------------------------------- */
