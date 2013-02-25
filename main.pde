@@ -1,47 +1,53 @@
 PFont f;
 OutPutStream striimi;
-Textbox textbox;
+Textbox nimilaatikko;
 
+// Tämä varmaan jatkossa Pelaaja luokan sisällä
 String pelaajan_nimi = "";
+
+// Pelin globaalit tilat
+final static int KysyNimi_tila = 0;
+final static int TervehdiPelaajaa_tila = 1;
+final static int AloitaPeli_tila = 2;
+int tila;
 
 void setup() {
   size(1024,768);
+  background(0,150,200,40);
   striimi = new OutPutStream();
-  textbox = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
+  tila = KysyNimi_tila;
+  nimilaatikko = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
 }
 
 void keyPressed() {
-  textbox.read_key(); // kerro textboxille että uutta dataa key-muuttujassa
-  println(textbox.get_data()); // tulosta tähän mennessä luetut kirjaimet konsoliin
+  switch(tila) {
+  case KysyNimi_tila:
+    nimilaatikko.read_key(); // kerro textboxille että uutta dataa key-muuttujassa
+    break;
+  }
 }
 
-int kahva = 0;
 
 void draw() {
   
-  if (kahva == 0) {
-    background(0,150,200,40);
-    textbox.display();
-    if(textbox.is_ready()) {
-      pelaajan_nimi = textbox.get_data();
-      kahva = 1;
+  switch(tila) {
+  case KysyNimi_tila:
+    nimilaatikko.display();
+    if(nimilaatikko.is_ready()) {
+      pelaajan_nimi = nimilaatikko.get_data();
+      tila = TervehdiPelaajaa_tila;
     }
-  }
+    break;
     
-  if (kahva == 1){
-    
-    //tervehdiPelaajaa- funktion pitaisi saada nimi parametrina
+  case TervehdiPelaajaa_tila:
     striimi.tervehdiPelaaja(pelaajan_nimi);
-    kahva = 2;
+    tila = AloitaPeli_tila;
+    break;
     
-  }
-  
-  else if (kahva == 2){
-    
+  case AloitaPeli_tila:
     striimi.aloitaPeli();
-    kahva = 1;
-    
+    tila = TervehdiPelaajaa_tila;
+    break;
   }
   
-
 }
