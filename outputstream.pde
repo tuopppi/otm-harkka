@@ -7,8 +7,7 @@ class OutPutStream  {
     textFont(f,32);                 
     fill(20);                        
     text("Tervetuloa pelaamaan " + pelaaja + "!",width/4,height/2);  //Display Text
-    delay(2000);  
-    
+
   } 
   
   void aloitaPeli(){
@@ -18,8 +17,7 @@ class OutPutStream  {
     textFont(f,32);                
     fill(20);                        
     text("Peli alkoi!",width/4,height/2);  //Display Text
-    delay(2000); 
-    
+
   }
    
 

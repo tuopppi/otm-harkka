@@ -35,7 +35,7 @@ class Textbox {
     _label = label;
   }
 
-  void display() {
+  void draw() {
     textSize(TEXT_SIZE);
     
     // Label

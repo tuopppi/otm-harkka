@@ -2,14 +2,15 @@ PFont f;
 OutPutStream striimi;
 Textbox nimilaatikko;
 
-// Tämä varmaan jatkossa Pelaaja luokan sisällä
-String pelaajan_nimi = "";
+Pelaaja pelaaja;
 
 // Pelin globaalit tilat
 final static int KysyNimi_tila = 0;
 final static int TervehdiPelaajaa_tila = 1;
 final static int AloitaPeli_tila = 2;
 int tila;
+
+int timer = 0;
 
 void setup() {
   size(1024,768);
@@ -27,27 +28,37 @@ void keyPressed() {
   }
 }
 
-
 void draw() {
-  
   switch(tila) {
   case KysyNimi_tila:
-    nimilaatikko.display();
+    nimilaatikko.draw();
     if(nimilaatikko.is_ready()) {
-      pelaajan_nimi = nimilaatikko.get_data();
+      // Käyttäjä kirjoittanut nimensä ja painanut enteriä
+      pelaaja = new Pelaaja(nimilaatikko.get_data());
       tila = TervehdiPelaajaa_tila;
     }
     break;
     
   case TervehdiPelaajaa_tila:
-    striimi.tervehdiPelaaja(pelaajan_nimi);
-    tila = AloitaPeli_tila;
-    break;
+      striimi.tervehdiPelaaja(pelaaja.get_nimi());
+      odota_ja_siirry(2000, AloitaPeli_tila);
+      break;
+    
     
   case AloitaPeli_tila:
     striimi.aloitaPeli();
-    tila = TervehdiPelaajaa_tila;
+    odota_ja_siirry(2000, AloitaPeli_tila);
     break;
   }
   
+}
+
+// Käyttää globaaleja muuttujia timer, tila
+void odota_ja_siirry(int time, int next_state) {
+  if(timer == 0) {
+    timer = millis() + time;
+  } else if(timer < millis()) {
+    tila = next_state;
+    timer = 0;
+  }
 }
