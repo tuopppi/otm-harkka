@@ -46,38 +46,14 @@ class Kentta {
       popMatrix();
   }
     else {
-      do {
-      println("karttavirhe");
-      }          //jos tyhmä kartantekijä on tehnyt virheen,
-      while(true); //jäädään ikuiseen silmukkaan
+      println("karttavirhe"); //jos tyhmä kartantekijä on tehnyt virheen,
+      exit();
     }
     
   }
     
-  //kentän "päälle" piirretään vielä sivupalkik
-  piirraSivupalkki();
-    
   }
- 
-  private void piirraSivupalkki() {
-    
-  //piirretään palkki
-  fill(_taustaVari);
-  rect(width-_sivupalkkiMarginaali-_sivupalkkiLeveys, _sivupalkkiMarginaali, _sivupalkkiLeveys, height-2*_sivupalkkiMarginaali, _sivupalkkiPyoreys);
-    
-  //piirretään kenttänumeron osoittaa arvo
-  textFont(kNroFontti);
-  fill(_reittiVari);
-    
-  //piirretään palkin sisältö
-  //kentän numero
-  pushMatrix();
-    translate(width-_sivupalkkiMarginaali-_sivupalkkiLeveys/2, 0);
-    textAlign(CENTER);
-    text("89", 0, _sivupalkkiMarginaali+100);
-  popMatrix();
-  }
- 
+  
   private void piirraTausta() {
   //20*20 pikseleistä jotain hienoa _taustaVariin liittyvää
   final int koko = 20;
@@ -108,12 +84,7 @@ class Kentta {
   private color _reittiVari;
   private final int _reittiPaksuus = 30;
   private final int _reittiPyoreys = 12;
-  private final int _sivupalkkiLeveys = 150;
-  private final int _sivupalkkiMarginaali = 10;
-  private final int _sivupalkkiPyoreys = 15;
- 
-  private final PFont kNroFontti = createFont("Comic Sans MS", 64, true); //Arial koko 16 laskostumisen kumoamisella
- 
+  
   private int[] _rX;
   private int[] _rY;
  

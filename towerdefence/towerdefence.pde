@@ -4,6 +4,7 @@ Textbox nimilaatikko;
 int[] k1X = {100, 100, 200, 200, 500, 500, 600, 600, 300, 300}; //{0,0}; //
 int[] k1Y = {500, 100, 100, 300, 300, 500, 500, 200, 200, 000}; //{0,1}; //  
 Kentta kentta1;
+Sivupalkki sivupalkki;
 
 Pelaaja pelaaja;
 
@@ -17,12 +18,13 @@ int tila;
 int timer = 0;
 
 void setup() {
-  size(1024,768);
+  size(800,600);
   background(0,150,200,40);
   striimi = new OutPutStream();
-  tila = KysyNimi_tila;
+  tila = PiirraKentta_tila;
   nimilaatikko = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
- kentta1 = new Kentta(color(0,0,140), color(255,255,0), k1X, k1Y);
+ kentta1 = new Kentta(color(123,22,140), color(255,255,0), k1X, k1Y);
+ sivupalkki= new Sivupalkki();
 }
 
 void keyPressed() {
@@ -49,7 +51,6 @@ void draw() {
       odota_ja_siirry(2000, AloitaPeli_tila);
       break;
     
-    
   case AloitaPeli_tila:
     striimi.aloitaPeli();
     odota_ja_siirry(2000, PiirraKentta_tila);
@@ -58,6 +59,7 @@ void draw() {
   
   case PiirraKentta_tila:
      kentta1.piirraKentta();
+     sivupalkki.draw();
      break;
   }
   

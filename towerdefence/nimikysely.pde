@@ -1,20 +1,3 @@
-/*
-void setup() {
-  size(800, 600);  // Size must be the first statement
-  textbox = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
-}
-
-void draw() {
-  background(0);
-  textbox.display();
-}
-
-void keyPressed() {
-  textbox.read_key(); // kerro textboxille että uutta dataa key-muuttujassa
-  println(textbox.get_data()); // tulosta tähän mennessä luetut kirjaimet konsoliin
-}
-*/
-
 /* Piirtää tekstilaatikon koordinaatteihin x,y
  * Tekstilaatikolle täytyy kertoa tapahtuneesta keyPressed eventistä kutsumalla
  * read_key() funktiota.
