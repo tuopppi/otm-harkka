@@ -1,22 +1,32 @@
 Tower tw;
 Sivupalkki sivupalkki;
 Kentta kentta;
+Ormy ormy;
+int time = 0;
 
 void setup() {
   size(800, 600);
   sivupalkki = new Sivupalkki();
   kentta = new Kentta();
   tw = new Tower(0, 0);
+  ormy = new Ormy(kentta);
 }
 
 void draw() {
   PVector k = kentta.get_coord(mouseX, mouseY);
-  tw.set_location(k);
+  if(kentta.is_free(k)) {
+    tw.set_location(k);
+  }
   
-  background(255);
+  background(140,199,78); // kentän taustaväri (vihreä)
   
-  tw.draw();
   kentta.draw();
+  tw.draw();
+  ormy.draw();
+  if(millis() > time + 100) {
+    ormy.move();
+    time = millis();
+  }
   sivupalkki.draw();
 }
 
@@ -24,7 +34,6 @@ void draw() {
 
 void mouseReleased() {
   PVector k = kentta.get_coord(mouseX, mouseY);
-  kentta.set_color(k);
 }
 
 void mousePressed() {

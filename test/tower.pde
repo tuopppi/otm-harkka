@@ -60,6 +60,7 @@ class Tower {
   
   void draw() {
       /* Perustornin piirtäminen */
+    stroke(0);
     fill(255);
     ellipse(_x, _y, _width, _width);
     
