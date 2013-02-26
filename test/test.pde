@@ -1,43 +1,34 @@
 Tower tw;
+Sivupalkki sivupalkki;
+Kentta kentta;
 
 void setup() {
-  size(640, 480);
+  size(800, 600);
+  sivupalkki = new Sivupalkki();
+  kentta = new Kentta();
   tw = new Tower(0, 0);
 }
 
 void draw() {
-  update(mouseX, mouseY);
+  PVector k = kentta.get_coord(mouseX, mouseY);
+  tw.set_location(k);
   
   background(255);
-  tw.draw();  
+  
+  tw.draw();
+  kentta.draw();
+  sivupalkki.draw();
 }
 
 /* -------------------------------- */
 
 void mouseReleased() {
-//tw.upgrade();
-
-  
-
+  PVector k = kentta.get_coord(mouseX, mouseY);
+  kentta.set_color(k);
 }
 
 void mousePressed() {
-  if(tw.is_locked()) {  
-    if(tw.clicked(mouseX, mouseY)) {
-      tw.show_info();
-    }
-  } else {
-    tw.lock();
-  }
-  
-    
-   
-}
-
-/* -------------------------------- */
-
-void update(int x, int y) {
-  tw.set_location(x, y);
+  tw.lock();
 }
 
 

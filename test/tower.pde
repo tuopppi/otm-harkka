@@ -51,22 +51,15 @@ class Tower {
     _draw_info = false;
   }
   
-  void set_location(int pos_x, int pos_y) {
+  void set_location(PVector k) {
     if(!_locked) {
-      _x = pos_x;
-      _y = pos_y;
+      _x = (int)k.x*50+25;
+      _y = (int)k.y*50+25;
     }
   }
   
   void draw() {
-    if(_draw_info) {
-      this.draw_info();
-    }
-    this.draw_tower();
-  }
-  
-  void draw_tower() {
-    /* Perustornin piirtäminen */
+      /* Perustornin piirtäminen */
     fill(255);
     ellipse(_x, _y, _width, _width);
     
@@ -76,22 +69,6 @@ class Tower {
     
     fill(128);
     ellipse(_x, _y, _width - 10, _width - 10);
-  }
-  
-  void draw_info() {    
-    // range
-    fill(255);
-    ellipse(_x, _y, _level * 100, _level * 100);
-    
-    // infopanel
-    rectMode(CORNER);
-    fill(255);
-    rect(width - 110, 10, 100, 100);
-    
-    textSize(16);
-    fill(0);
-    text("Info", width-100, 30); 
-   
   }
 
 }

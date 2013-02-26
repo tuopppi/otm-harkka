@@ -21,7 +21,7 @@ void setup() {
   size(800,600);
   background(0,150,200,40);
   striimi = new OutPutStream();
-  tila = PiirraKentta_tila;
+  tila = KysyNimi_tila;
   nimilaatikko = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
  kentta1 = new Kentta(color(123,22,140), color(255,255,0), k1X, k1Y);
  sivupalkki= new Sivupalkki();
@@ -48,17 +48,16 @@ void draw() {
     
   case TervehdiPelaajaa_tila:
       striimi.tervehdiPelaaja(pelaaja.get_nimi());
-      odota_ja_siirry(2000, AloitaPeli_tila);
+      odota_ja_siirry(1000, AloitaPeli_tila);
       break;
     
   case AloitaPeli_tila:
     striimi.aloitaPeli();
-    odota_ja_siirry(2000, PiirraKentta_tila);
+    odota_ja_siirry(500, PiirraKentta_tila);
     break;
   
-  
   case PiirraKentta_tila:
-     kentta1.piirraKentta();
+     kentta1.draw();
      sivupalkki.draw();
      break;
   }
