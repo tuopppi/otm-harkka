@@ -39,18 +39,6 @@ class Tower {
     return _locked;
   }
   
-  boolean info_visable() {
-    return _draw_info;
-  }
-  
-  void show_info() {
-    _draw_info = true;
-  }
-  
-  void hide_info() {
-    _draw_info = false;
-  }
-  
   void set_location(PVector k) {
     if(!_locked) {
       _x = (int)k.x*50+25;
