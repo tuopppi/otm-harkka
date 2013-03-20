@@ -1,9 +1,9 @@
 class Sivupalkki {
-  PGraphics sivupalkki;
+
   int _level = 0;
   
   Sivupalkki() {
-    sivupalkki = createGraphics(200, height);
+
   }
   
   void set_level(int lvl) {
@@ -11,16 +11,13 @@ class Sivupalkki {
   }
   
   void draw() {
-    sivupalkki.beginDraw();
-    /* Kaikki funktiokutsut jotka piirtää beginDraw ja endDraw väliin */
-    
-    sivupalkki.background(200);
-    sivupalkki.text(_level, 20, 20);
-    
-    sivupalkki.endDraw();
-    
-    // piirrä ruudulle
-    image(sivupalkki, width-200, 0);  
+    translate(width-200, 0);
+
+    fill(200);
+    rectMode(CORNER);
+    rect(0+10, 0+10, 200-20, height-20, 5);
+    text(_level, 20, 20);
+
   }
   
 }

@@ -27,7 +27,14 @@ class Kentta {
   }
   
   PVector get_coord(int x, int y) {
-    return new PVector((int)(x/50), (int)(y/50));
+    PVector tmpcoord = new PVector((int)(x/50), (int)(y/50));
+    if(tmpcoord.x > 11) {
+      tmpcoord.x = 11;
+    }
+    if(tmpcoord.y > 11) {
+      tmpcoord.y = 11;
+    }
+    return tmpcoord;
   }
   
   boolean is_free(PVector k) {
