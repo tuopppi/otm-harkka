@@ -16,6 +16,7 @@ class Kentta {
       new PVector(9, 6), new PVector(9, 7) , new PVector(9, 8), new PVector(9, 9), // alas
       new PVector(8, 9), new PVector(7, 9), new PVector(6, 9), new PVector(5, 9), // vasemmalle
       new PVector(5, 10), new PVector(5, 11), new PVector(5, 12) // alas
+      
     ));
     
     // Spawnaa hirviöt
@@ -24,6 +25,7 @@ class Kentta {
     for(int i = 10; i < 80; i++) {
       _hirviot.add(new Ormy(_reitti, i*10, color(i*10 % 255)));
     }
+    
   }
   
   PVector get_coord(int x, int y) {
@@ -60,6 +62,10 @@ class Kentta {
       Ormy o = (Ormy)(hirviot_it.next());
       o.draw();
     }
+    
+    
+    
+    
 
     
 

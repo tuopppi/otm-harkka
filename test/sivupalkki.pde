@@ -2,9 +2,11 @@ class Sivupalkki {
 
   int _level = 0;
   int _testi = 0;
-    
+  PFont f;
+  Laskuri laskuri;
+  boolean halytysAnnettu = false;
   Sivupalkki() {
-
+    laskuri = new Laskuri();
   }
   
   void set_level(int lvl) {
@@ -12,6 +14,8 @@ class Sivupalkki {
   }
   
   void draw() {
+    
+    
     
     translate(width-200, 0);
 
@@ -21,6 +25,14 @@ class Sivupalkki {
     text(_level, 20, 20);
     
     //Ylimpänä sivupalkissa on aika
+    laskuri.starttaaLaskuri();
+    f = createFont("Georgia",20,true); 
+    textFont(f,32);                 
+    fill(20);
+      
+    text(laskuri.getTime(),30,60);  //Display Text
+    text("s",70,60);
+    
     //Rahatilanne
     //Ostettavat tykit
     fill(_testi);

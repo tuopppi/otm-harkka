@@ -11,7 +11,6 @@ void setup() {
   sivupalkki = new Sivupalkki();
   kentta = new Kentta();
   tw = new Tower(0, 0);
-  
   // TODO: siirrä oikeaan paikkaan tila systeemissä
   pelaaja = new Pelaaja("Pelaaja1");
 }
