@@ -1,7 +1,6 @@
 class Sivupalkki {
 
   int _level = 0;
-  int _testi = 0;
   PFont f;
   private Laskuri _laskuri;
   
@@ -14,11 +13,16 @@ class Sivupalkki {
   }
   
   void draw() {
-    translate(width-200, 0);
-
+    pushMatrix();
+    translate(VTRANSX, VTRANSY);
+    //EI käytetä translate-funktiota sivupalkin ominaisuuksien kanssa, koska
+    //se ja Xmouse/Ymouse ei sovellu ollenkaan yhteen -> nappien painalluksien
+    //tunnistamisesta tulee aivan * vaikeaa.
+    //translate(width-200, 0);
+     
     fill(200);
     rectMode(CORNER);
-    rect(0+10, 0+10, 200-20, height-20, 5);
+    rect(10, 10, 200-20, height-20, 5);
     text(_level, 20, 20);
     
     //Ylimpänä sivupalkissa on aika
@@ -32,15 +36,22 @@ class Sivupalkki {
     text("s",45,60);
     
     //Rahatilanne
-    //Ostettavat tykit
-    fill(_testi);
-    rect(30,100, 50,50);
-    if(rectClicked(30,100, 80,150, width-200,0)) {
-      _testi = (int)random(255);
+    
+    //Ostettavat tykit (KAUPPA)
+    pushMatrix();
+    translate(-1*VTRANSX, -1*VTRANSY);
+    punaTykkiNappi.draw();
+    vihrTykkiNappi.draw();
+    siniTykkiNappi.draw();
+    
+    if(punaTykkiNappi.pressed()) {
+      tornit[tornienLkm] = new Tower(0, 0);
+      tornienLkm++;
     }
+    popMatrix();
     //Valitun (kentältä/kaupasta) tykin tiedot
     //Kentän numero
-    
+    popMatrix();
   }
   
 }
