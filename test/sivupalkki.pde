@@ -1,24 +1,57 @@
 class Sivupalkki {
 
+  PVector offset;
+  
   int _level = 0;
   PFont f;
   private Laskuri _laskuri;
   
+    //luodaan napit
+  Nappi punaTykkiNappi;
+  Nappi vihrTykkiNappi;
+  Nappi siniTykkiNappi;
+  
   Sivupalkki(Laskuri laskuri) {
     _laskuri = laskuri;
+    offset = new PVector(width-200, 0);
+    
+    //sivupalkin napit
+    punaTykkiNappi = new Nappi(20, 150, 50, 50, color(255,0,0));
+    vihrTykkiNappi = new Nappi(20+55, 150, 50, 50, color(0,255,0));
+    siniTykkiNappi = new Nappi(20+110, 150, 50, 50, color(0,0,255));
   }
   
   void set_level(int lvl) {
     _level = lvl;
   }
   
+  /* Pääohjelman mouseClicked funktio kutsuu tätä funktiota jos painalluksen koordinaatit
+   * ovat sivupalkin alueella */
+  void mouseClicked() {
+    int translated_x = mouseX - (int)offset.x;
+    int translated_y = mouseY - (int)offset.y;
+    
+    if( this.punaTykkiNappi.pressed(translated_x, translated_y) ) {
+      print("puna");
+      if(pelaaja.muuta_rahoja(-260)) {
+        tornit[tornienLkm] = new Tower(12, 3);
+        tornienLkm++;
+      }
+    }
+    
+    else if( this.vihrTykkiNappi.pressed(translated_x, translated_y) ) {
+      print("vihr");
+    }
+    
+    else if( this.siniTykkiNappi.pressed(translated_x, translated_y) ) {
+      print("sini");
+    }
+    
+  }
+  
   void draw() {
-    pushMatrix();
-    translate(VTRANSX, VTRANSY);
-    //EI käytetä translate-funktiota sivupalkin ominaisuuksien kanssa, koska
-    //se ja Xmouse/Ymouse ei sovellu ollenkaan yhteen -> nappien painalluksien
-    //tunnistamisesta tulee aivan * vaikeaa.
-    //translate(width-200, 0);
+
+    translate(offset.x, offset.y);
      
     fill(200);
     rectMode(CORNER);
@@ -36,22 +69,16 @@ class Sivupalkki {
     text("s",45,60);
     
     //Rahatilanne
+    text("Rahat:",30,80);
+    text(pelaaja.get_rahat(), 70, 80);
     
     //Ostettavat tykit (KAUPPA)
-    pushMatrix();
-    translate(-1*VTRANSX, -1*VTRANSY);
     punaTykkiNappi.draw();
     vihrTykkiNappi.draw();
     siniTykkiNappi.draw();
     
-    if(punaTykkiNappi.pressed()) {
-      tornit[tornienLkm] = new Tower(0, 0);
-      tornienLkm++;
-    }
-    popMatrix();
     //Valitun (kentältä/kaupasta) tykin tiedot
     //Kentän numero
-    popMatrix();
   }
   
 }
