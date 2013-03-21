@@ -26,12 +26,13 @@ class Sivupalkki {
     
     //Ylimpänä sivupalkissa on aika
     laskuri.starttaaLaskuri();
-    f = createFont("Georgia",20,true); 
-    textFont(f,32);                 
+    f = createFont("Georgia",10,true); 
+    textFont(f,12);                 
     fill(20);
-      
+    
+    text("Seuraava aalto:",30,40);  
     text(laskuri.getTime(),30,60);  //Display Text
-    text("s",70,60);
+    text("s",45,60);
     
     //Rahatilanne
     //Ostettavat tykit
