@@ -2,14 +2,19 @@ Tower tw;
 Sivupalkki sivupalkki;
 Kentta kentta;
 Pelaaja pelaaja;
+Laskuri laskuri;
 int time = 0;
 int mouseWait = 0;
 
 
 void setup() {
   size(800, 600);
-  sivupalkki = new Sivupalkki();
-  kentta = new Kentta();
+  
+  laskuri = new Laskuri();
+  kentta = new Kentta(laskuri);
+  sivupalkki = new Sivupalkki(laskuri);
+  
+  laskuri.starttaaLaskuri();
   tw = new Tower(0, 0);
   // TODO: siirrä oikeaan paikkaan tila systeemissä
   pelaaja = new Pelaaja("Pelaaja1");

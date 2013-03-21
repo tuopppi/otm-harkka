@@ -3,10 +3,10 @@ class Sivupalkki {
   int _level = 0;
   int _testi = 0;
   PFont f;
-  Laskuri laskuri;
-  boolean halytysAnnettu = false;
-  Sivupalkki() {
-    laskuri = new Laskuri();
+  private Laskuri _laskuri;
+  
+  Sivupalkki(Laskuri laskuri) {
+    _laskuri = laskuri;
   }
   
   void set_level(int lvl) {
@@ -14,9 +14,6 @@ class Sivupalkki {
   }
   
   void draw() {
-    
-    
-    
     translate(width-200, 0);
 
     fill(200);
@@ -25,13 +22,13 @@ class Sivupalkki {
     text(_level, 20, 20);
     
     //Ylimpänä sivupalkissa on aika
-    laskuri.starttaaLaskuri();
+
     f = createFont("Georgia",10,true); 
     textFont(f,12);                 
     fill(20);
     
     text("Seuraava aalto:",30,40);  
-    text(laskuri.getTime(),30,60);  //Display Text
+    text(_laskuri.getTime(),30,60);  //Display Text
     text("s",45,60);
     
     //Rahatilanne

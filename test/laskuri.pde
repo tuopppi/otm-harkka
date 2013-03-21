@@ -15,9 +15,6 @@ class Laskuri{
       if(time > 0){
         --time;
       }
-      else{
-       time = 10; 
-      }
     }
   });
   
