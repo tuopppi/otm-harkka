@@ -11,6 +11,10 @@ class Pelaaja {
     return _nimi;
   }
   
+  int get_rahat() {
+    return _rahat;
+  }
+  
   // Lisää (+) tai vähentää (-) pelaajan varallisuutta. Paluuarvo kertoo onnistuiko tapahtuma.
   // Lisäys: Paluuarvo on aina true.
   // Vähennys: Jos käyttäjän varallisuus menee negatiiviseksi, palautetaan false ja käyttäjän rahoihin ei kosketa.
