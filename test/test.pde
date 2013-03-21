@@ -5,7 +5,7 @@ int tornienLkm = 0;
 Sivupalkki sivupalkki;
 Kentta kentta;
 Pelaaja pelaaja;
-
+Laskuri laskuri;
 
 //sivupalkin vas-yläkulman sijainti. Tätä EI voi hoitaa järkevämmin translate():lla
 final int VTRANSX = 600;
