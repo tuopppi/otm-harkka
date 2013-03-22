@@ -7,11 +7,19 @@ class Sivupalkki {
   private Laskuri _laskuri;
   boolean _valikonNappiPohjassa = false;
   
-    //luodaan napit
-  Nappi punaTykkiNappi;
-  Nappi vihrTykkiNappi;
-  Nappi siniTykkiNappi;
   
+  
+
+
+  Nappi punaTykkiNappi;
+  static final int puna_idx = 1;
+  Nappi vihrTykkiNappi;
+  static final int sini_idx = 2;
+  Nappi siniTykkiNappi;
+  static final int vihr_idx = 3;
+  
+  int hiiri_napin_paalla_index = 0;
+    
   Sivupalkki(Laskuri laskuri) {
     _laskuri = laskuri;
     offset = new PVector(width-200, 0);
@@ -20,10 +28,36 @@ class Sivupalkki {
     punaTykkiNappi = new Nappi(20, 150, 50, 50, color(255,0,0));
     vihrTykkiNappi = new Nappi(20+55, 150, 50, 50, color(0,255,0));
     siniTykkiNappi = new Nappi(20+110, 150, 50, 50, color(0,0,255));
+    
+    f = createFont("Georgia",10,true); 
+    textFont(f,12);   
   }
   
   void set_level(int lvl) {
     _level = lvl;
+  }
+  
+  /* Pääohjelman mouseMoved funktio kutsuu tätä jos hiiri on sivupalkin yläpuolella */
+  void mouseMoved() {
+    int translated_x = mouseX - (int)offset.x;
+    int translated_y = mouseY - (int)offset.y;
+    
+	/* Tarkistetaan onko hiiri jonkin napin päällä ja asetetaan 
+	 * hiiri_napin_paalla_index muuttuja vastaamaan sitä nappia jonka 
+	 * päällä hiiri on.
+     */
+    if(punaTykkiNappi.pressed(translated_x, translated_y)) { 
+      hiiri_napin_paalla_index = puna_idx;
+    }
+    else if(vihrTykkiNappi.pressed(translated_x, translated_y)) { 
+      hiiri_napin_paalla_index = vihr_idx;
+    }
+    else if(siniTykkiNappi.pressed(translated_x, translated_y)) { 
+      hiiri_napin_paalla_index = sini_idx;
+    }
+    else {
+      hiiri_napin_paalla_index = 0;
+    }  
   }
   
   /* Pääohjelman mouseClicked funktio kutsuu tätä funktiota jos painalluksen koordinaatit
@@ -62,6 +96,28 @@ class Sivupalkki {
     
   }
   
+  void draw_torni_info() {
+    /* piirretään laatikko jossa voidaan näyttää rakennettavissa olevien 
+     * tornien tietoja */
+    int offset_x = 20;
+    int offset_y = 220;
+    fill(230);
+    rect(offset_x, offset_y, 160, 160);
+    
+    fill(20); // tekstin väri
+    switch(hiiri_napin_paalla_index) {
+      case puna_idx:
+        text("PUNAINEN", offset_x + 10, offset_y + 20);  
+        break;
+      case sini_idx:
+        text("SININEN", offset_x + 10, offset_y + 20);  
+        break;
+      case vihr_idx:
+        text("VIHREÄ", offset_x + 10, offset_y + 20);  
+        break;
+    }
+  }
+  
   void draw() {
     translate(offset.x, offset.y);
      
@@ -71,10 +127,7 @@ class Sivupalkki {
     rect(10, 10, 200-20, height-20, 5);
     text(_level, 20, 20);
     
-    //Ylimpänä sivupalkissa on aika
-
-    f = createFont("Georgia",10,true); 
-    textFont(f,12);                 
+    //Ylimpänä sivupalkissa on aika    
     fill(20);
     
     text("Seuraava aalto:",30,40);  
@@ -93,7 +146,16 @@ class Sivupalkki {
     println(tornienLkm);
  
     //Valitun (kentältä/kaupasta) tykin tiedot
+	
+	// indexi on nolla jos hiiri ei ole napin päällä
+	if(hiiri_napin_paalla_index > 0) {
+		
+		draw_torni_info();
+	}
+	
     //Kentän numero
+    
+    
   }
   
 }

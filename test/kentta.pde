@@ -4,9 +4,10 @@ class Kentta {
   private List<PVector> _reitti;
   private List<Ormy> _hirviot;
   private Laskuri _laskuri;
+  private Laskuri _hirvio_viesti_laskuri;
   
-  Kentta(Laskuri laskuri) {
-    _laskuri = laskuri;
+  Kentta() {
+    _hirvio_viesti_laskuri = new Laskuri();
     
     background(140,199,78);
        
@@ -85,9 +86,22 @@ class Kentta {
       }      
     }
     
+    if(_hirvio_viesti_laskuri.laskuri.isRunning()) {
+      text("UUSI AALTO STARTTAA PIAN", 10, 20);
+    }
+    
     if(laskuri.getTime() <= 0) {
+      _hirvio_viesti_laskuri.setTime(2); // uusi aalto starttaa tämän ajan jälkeen
+      _hirvio_viesti_laskuri.starttaaLaskuri();
+      laskuri.setTime(5); // seuraavan aallon alkamisaika siitä kun viestilaskuri on laskenut nollaan
+      laskuri.pysaytaLaskuri(); // viestilaskuri starttaa tämän myöhemmin
+    }
+    
+    if(_hirvio_viesti_laskuri.getTime() <= 0) {
       spawnaaHirviot();
-      laskuri.setTime(5); // uudet hirviöt 5s jälkeen
+      _hirvio_viesti_laskuri.setTime(100); // ei väliä, kunhan > 0 ettei laukea uudelleen
+      _hirvio_viesti_laskuri.pysaytaLaskuri();
+      laskuri.starttaaLaskuri();
     }
 
   }

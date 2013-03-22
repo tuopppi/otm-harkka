@@ -15,7 +15,7 @@ void setup() {
   size(800, 600);
   
   laskuri = new Laskuri();
-  kentta = new Kentta(laskuri);
+  kentta = new Kentta();
   sivupalkki = new Sivupalkki(laskuri);
   
   laskuri.starttaaLaskuri();
@@ -54,6 +54,12 @@ void draw() {
 }
 
 /* -------------------------------- */
+
+void mouseMoved() {
+  if(mouseX > sivupalkki.offset.x) {
+    sivupalkki.mouseMoved();
+  }
+}
 
 void mouseClicked() {
   if(mouseX > sivupalkki.offset.x) {    //jos painetaan valikon nappia...
