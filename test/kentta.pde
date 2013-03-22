@@ -3,13 +3,16 @@ import java.util.*;
 class Kentta {
   private List<PVector> _reitti;
   private List<Ormy> _hirviot;
-  private Laskuri _laskuri;
   private Laskuri _hirvio_viesti_laskuri;
   
   Kentta() {
     _hirvio_viesti_laskuri = new Laskuri();
+    laskuri.setTime(2); // ensimmäinen aalto 2s päästä
+    _hirvio_viesti_laskuri.setTime(0); // näytä varoitusviesti
+    laskuri.starttaaLaskuri();
+    _hirvio_viesti_laskuri.starttaaLaskuri();
     
-    background(140,199,78);
+   // background(140,199,78);
        
     // Määritellään ruudut jotka ovat osa hirviöiden reittiä
     _reitti = new ArrayList<PVector>();
@@ -23,10 +26,7 @@ class Kentta {
       
     ));
     
-    // Spawnaa hirviöt
-    // !!! Huom, määrittele reitti ennen hirviöitä
     _hirviot = new ArrayList<Ormy>();
-    spawnaaHirviot();    
   }
   
   void spawnaaHirviot() {
@@ -35,6 +35,9 @@ class Kentta {
     }
   }
   
+  /* Palauttaa pelilaudan koordinaatin joka vastaa hiiren koordinaattia
+   * Vasen yläkulma on (0.0, 0.0) ja oikea alakulma (11.0, 11.0)
+   */
   PVector get_coord(int x, int y) {
     PVector tmpcoord = new PVector((int)(x/50), (int)(y/50));
     if(tmpcoord.x > 11) {
@@ -46,11 +49,17 @@ class Kentta {
     return tmpcoord;
   }
   
+  /* Jos k osoittama kenttäkoordinaatti (0,0) - (11, 11) on vapaa
+   * (ei ole osa hirviöiden reittiä / ei sisällä jo tornia)
+   * palautetaan true, muuten false
+   */
   boolean is_free(PVector k) {
     
     boolean toisenTorninPaalle = false;
+    PVector mousepos = get_coord(mouseX, mouseY);
     for(int i=0; i<tornienLkm-1; ++i) {
-      if(abs(tornit[i]._x - (mouseX)) < 25 && abs(tornit[i]._y - (mouseY)) < 25/*tornit[i]._x, tornit[i]._x) == get_coord(mouseX, mouseY)*/) {
+      PVector tornipos = get_coord(tornit[i]._x, tornit[i]._y);
+      if((int)tornipos.x == (int)mousepos.x && (int)tornipos.y == (int)mousepos.y) {
         toisenTorninPaalle = true;
         break;
       }
@@ -59,7 +68,7 @@ class Kentta {
     return !_reitti.contains(k) && !toisenTorninPaalle;
   }
   
-  void set_color(PVector kk) {
+  void piirra_reittiruutu(PVector kk) {
     noStroke();
     fill(212,178,68);
     rectMode(CORNER);
@@ -68,11 +77,13 @@ class Kentta {
   
   void draw() {
     
+    background(140,199,78); // kentän taustaväri (vihreä)
+    
     // Väritellään reitin ruudut uudelleen, koska niiden yli on kulkenut örmyjä jotka muuten jättävät 
     // värivanan peräänsä
     Iterator ruudut_it = _reitti.iterator();
     while(ruudut_it.hasNext()) {
-      this.set_color((PVector)ruudut_it.next());
+      this.piirra_reittiruutu((PVector)ruudut_it.next());
     }
     
     // Tarkistetaan onko hirviö kuollut, jos on poistetaan listalta
@@ -86,22 +97,22 @@ class Kentta {
       }      
     }
     
-    if(_hirvio_viesti_laskuri.laskuri.isRunning()) {
-      text("UUSI AALTO STARTTAA PIAN", 10, 20);
-    }
+    /* Hirviöiden spawnaamisesta vastaa @laskuri
+     * @_hirvio_viesti_laskuri asetetaan laukeamaan pari sekunttia ennen @laskuria
+     * jolloin näytetään varoitusviesti. 
+     */
     
     if(laskuri.getTime() <= 0) {
-      _hirvio_viesti_laskuri.setTime(2); // uusi aalto starttaa tämän ajan jälkeen
-      _hirvio_viesti_laskuri.starttaaLaskuri();
-      laskuri.setTime(5); // seuraavan aallon alkamisaika siitä kun viestilaskuri on laskenut nollaan
-      laskuri.pysaytaLaskuri(); // viestilaskuri starttaa tämän myöhemmin
+      spawnaaHirviot();
+      int seuraava_aalto = 8;
+      laskuri.setTime(seuraava_aalto);
+      _hirvio_viesti_laskuri.setTime(seuraava_aalto - 3); // näytä varoitusviesti 3s ennen aaltoa
     }
     
+    // Kun viestilaskuri menee nollaan näytään varoitusviesti
     if(_hirvio_viesti_laskuri.getTime() <= 0) {
-      spawnaaHirviot();
-      _hirvio_viesti_laskuri.setTime(100); // ei väliä, kunhan > 0 ettei laukea uudelleen
-      _hirvio_viesti_laskuri.pysaytaLaskuri();
-      laskuri.starttaaLaskuri();
+      fill(0);
+      text("UUSI AALTO STARTTAA PIAN", 10, 20);
     }
 
   }

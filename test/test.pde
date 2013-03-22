@@ -17,8 +17,6 @@ void setup() {
   laskuri = new Laskuri();
   kentta = new Kentta();
   sivupalkki = new Sivupalkki(laskuri);
-  
-  laskuri.starttaaLaskuri();
 
   //taulukko torneista (kentällä maksimissaan (teoriassa) 12*12=124 tornia)
   tornit = new Tower[124];
@@ -33,7 +31,7 @@ void draw() {
   
   PVector grid_coord = kentta.get_coord(mouseX, mouseY);
   
-  background(140,199,78); // kentän taustaväri (vihreä)
+ 
   kentta.draw();
   
  
