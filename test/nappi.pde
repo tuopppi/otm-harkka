@@ -7,7 +7,7 @@
 
 class Nappi {
   
-  Nappi(int xKoord, int yKoord, int leveys, int korkeus, color vari, boolean valikkoNappi) {
+  Nappi(int xKoord, int yKoord, int leveys, int korkeus, color vari) {
     
     _x = xKoord;
     _y = yKoord;
@@ -15,31 +15,19 @@ class Nappi {
     _h = korkeus;
     _c = vari;
     
-    if(valikkoNappi == true) {
-      _xTrans = VTRANSX;
-      _yTrans = VTRANSY;
-    }
-    else {
-      _xTrans = 0;
-      _yTrans = 0;
-    }
   }
-  
-  //onko nappia painettu
-  boolean pressed() {
-    
-    if(rectClicked(_x+_xTrans,_y+_yTrans, _w,_h)) {
-      println("Klikkaus");
-      return true;
-    }
-    
-    return false;
+   
+  /* onko nappia painettu
+   * @clickx, @clicky: painalluken koordinaatti suhteessa nappikoordinaattien nollakohtaan
+   */
+  boolean pressed(int clickx, int clicky) {
+    return (clickx > _x && clickx < _x + _w &&
+            clicky > _y && clicky < _y + _h);
   }
   
   void draw() {
-    
     fill(_c);
-    rect(_x+_xTrans,_y+_yTrans, _w,_h);
+    rect(_x,_y, _w,_h);
   }
    
   private int   _x;
@@ -47,7 +35,5 @@ class Nappi {
   private int   _w;
   private int   _h;
   private color _c;
-  
-  private int _xTrans;
-  private int _yTrans;
+
 }
