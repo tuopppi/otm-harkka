@@ -46,7 +46,16 @@ class Kentta {
   }
   
   boolean is_free(PVector k) {
-    return !_reitti.contains(k);
+    
+    boolean toisenTorninPaalle = false;
+    for(int i=0; i<tornienLkm-1; ++i) {
+      if(abs(tornit[i]._x - (mouseX)) < 25 && abs(tornit[i]._y - (mouseY)) < 25/*tornit[i]._x, tornit[i]._x) == get_coord(mouseX, mouseY)*/) {
+        toisenTorninPaalle = true;
+        break;
+      }
+    }
+    //jos ei reitillä eikä toisen tornin päällä -> true
+    return !_reitti.contains(k) && !toisenTorninPaalle;
   }
   
   void set_color(PVector kk) {

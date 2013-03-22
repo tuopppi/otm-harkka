@@ -29,6 +29,8 @@ void setup() {
 
 void draw() {
   
+  println(sivupalkki._valikonNappiPohjassa);
+  
   PVector grid_coord = kentta.get_coord(mouseX, mouseY);
   
   background(140,199,78); // kentän taustaväri (vihreä)
@@ -54,12 +56,14 @@ void draw() {
 /* -------------------------------- */
 
 void mouseClicked() {
-  if(mouseX > sivupalkki.offset.x) {
+  if(mouseX > sivupalkki.offset.x) {    //jos painetaan valikon nappia...
     sivupalkki.mouseClicked();
-	sivupalkki._valikonNappiPohjassa = false;
   } 
-  else {
-    tornit[tornienLkm-1].lock();
+  else if(sivupalkki._valikonNappiPohjassa == true && pelaaja.muuta_rahoja(-260)) { //rakennustilanne. Onko pelaajalla rahaa?
+      tornit[tornienLkm-1].lock();
+      sivupalkki._valikonNappiPohjassa = false;
+  }
+  else {  //muut tilanteet
   }
 }
 

@@ -31,37 +31,33 @@ class Sivupalkki {
   void mouseClicked() {
     int translated_x = mouseX - (int)offset.x;
     int translated_y = mouseY - (int)offset.y;
-    
-	if(pelaaja.muuta_rahoja(-260)) {
        
-		///KAUPPANAPPIEN PAINAMINEN
-		////punaisen tykin rakennusnappi
-		if(punaTykkiNappi.pressed(translated_x, translated_y)) {      
-		  if(_valikonNappiPohjassa) { tornienLkm--; } //jos jotain nappia on jo painettu kun tätä nappia painetaan, hävitetään edellinen torni
-		  
-		  tornit[tornienLkm] = new Tower(0, 0, color(255, 0, 0));
-		  tornienLkm++;
-		  _valikonNappiPohjassa = true;
-		}
-		
-		////vihreän tykin rakennusnappi
-		if(vihrTykkiNappi.pressed(translated_x, translated_y)) {
-		  if(_valikonNappiPohjassa) { tornienLkm--; }
-		  
-		  tornit[tornienLkm] = new Tower(0, 0, color(0, 255, 0));
-		  tornienLkm++;
-		  _valikonNappiPohjassa = true;
-		}
-		
-		////sinisen tykin rakennusnappi
-		if(siniTykkiNappi.pressed(translated_x, translated_y)) {
-		  if(_valikonNappiPohjassa) { tornienLkm--; }
-		  
-		  tornit[tornienLkm] = new Tower(0, 0, color(0, 0, 255));
-		  tornienLkm++;
-		  _valikonNappiPohjassa = true;
-		}
+	///KAUPPANAPPIEN PAINAMINEN
+	////punaisen tykin rakennusnappi
+	if(punaTykkiNappi.pressed(translated_x, translated_y)) {      
+	  if(_valikonNappiPohjassa) { tornienLkm--; } //jos jotain nappia on jo painettu kun tätä nappia painetaan, hävitetään edellinen torni
+	  
+	  tornit[tornienLkm] = new Tower(0, 0, color(255, 0, 0));
+	  tornienLkm++;
+	  _valikonNappiPohjassa = true;
+	}
 	
+	////vihreän tykin rakennusnappi
+	if(vihrTykkiNappi.pressed(translated_x, translated_y)) {
+	  if(_valikonNappiPohjassa) { tornienLkm--; }
+	  
+	  tornit[tornienLkm] = new Tower(0, 0, color(0, 255, 0));
+	  tornienLkm++;
+	  _valikonNappiPohjassa = true;
+	}
+	
+	////sinisen tykin rakennusnappi
+	if(siniTykkiNappi.pressed(translated_x, translated_y)) {
+	  if(_valikonNappiPohjassa) { tornienLkm--; }
+	  
+	  tornit[tornienLkm] = new Tower(0, 0, color(0, 0, 255));
+	  tornienLkm++;
+	  _valikonNappiPohjassa = true;
 	}
     
   }
