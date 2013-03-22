@@ -45,7 +45,6 @@ class Ormy {
     if(_pos_indx + 1 >= _reitti.size()) {
       _hitpoints = 0;
       _pos_indx = 0;
-      print("kuolin\n");
     }
   }
   

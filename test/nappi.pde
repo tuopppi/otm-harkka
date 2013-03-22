@@ -25,7 +25,7 @@ class Nappi {
     }
   }
   
-  //onko nappia painettu (translaatiot parametreinä)
+  //onko nappia painettu
   boolean pressed() {
     
     if(rectClicked(_x+_xTrans,_y+_yTrans, _w,_h)) {

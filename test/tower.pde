@@ -5,10 +5,12 @@ class Tower {
   int _level = 1;
   boolean _locked = false;
   boolean _draw_info = false;
+  color _color;
   
-  Tower(int pos_x, int pos_y) {
+  Tower(int pos_x, int pos_y, color vari) {
     _x = pos_x;
     _y = pos_y;
+    _color = vari;
   }
   
   boolean clicked(int click_x, int click_y) {
@@ -53,10 +55,10 @@ class Tower {
     ellipse(_x, _y, _width, _width);
     
     rectMode(CENTER);
-    fill(64);
+    fill(red(_color)-64, green(_color)-64, blue(_color)-64);
     rect(_x, _y - 20, 20, 20, 4);
     
-    fill(128);
+    fill(_color);
     ellipse(_x, _y, _width - 10, _width - 10);
   }
 

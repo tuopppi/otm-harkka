@@ -1,4 +1,3 @@
-//Tower tw;
 Tower[] tornit;
 int tornienLkm = 0;
 
@@ -7,7 +6,7 @@ Kentta kentta;
 Pelaaja pelaaja;
 Laskuri laskuri;
 
-//sivupalkin vas-yläkulman sijainti. Tätä EI voi hoitaa järkevämmin translate():lla
+//sivupalkin vas-yläkulman sijainti.
 final int VTRANSX = 600;
 final int VTRANSY = 0;
 
@@ -16,6 +15,7 @@ final int VTRANSY = 0;
   Nappi punaTykkiNappi;
   Nappi vihrTykkiNappi;
   Nappi siniTykkiNappi;
+  
 int time = 0;
 
 boolean mouseClick = false;
@@ -28,9 +28,10 @@ void setup() {
   sivupalkki = new Sivupalkki(laskuri);
   
   laskuri.starttaaLaskuri();
-
-  //tw = new Tower(0, 0);
+  
+  //taulukko torneista (kentällä maksimissaan (teoriassa) 12*12=124 tornia)
   tornit = new Tower[124];
+  
   //sivupalkin napit
   punaTykkiNappi = new Nappi(20+0,   0+150, 50, 50, color(255,0,0), true);
   vihrTykkiNappi = new Nappi(20+55,  0+150, 50, 50, color(0,255,0), true);
@@ -43,7 +44,6 @@ void setup() {
 void draw() {
   
   PVector grid_coord = kentta.get_coord(mouseX, mouseY);
-
   
   background(140,199,78); // kentän taustaväri (vihreä)
   kentta.draw();
@@ -54,6 +54,8 @@ void draw() {
     tornit[i].draw();
   }
   
+  sivupalkki.draw();
+  
   //piirretään rakennettava, hiiren mukana kulkeva torni (mikäli tarpeen)
   if(tornienLkm > 0 && tornit[tornienLkm-1]._locked == false && kentta.is_free(grid_coord)) {
     
@@ -62,32 +64,32 @@ void draw() {
     
     if(mouseClick) {
       
+      sivupalkki._valikonNappiPohjassa = false;
       tornit[tornienLkm-1].lock();
     }
   }
   
-  sivupalkki.draw();
   //seuraavat pidetään teknisistä syistä ihan drawin lopussa
- 
+  
   mouseClick = false;
 }
 
 /* -------------------------------- */
-
+/*
 void mouseReleased() {
 }
 
 void mousePressed() {
-
-  //tw.lock();
 }
 
-
+*/
 
 boolean rectClicked(int x, int y, int w, int h) {
+  
   if(x <= mouseX && mouseX <= x+w
   && y <= mouseY && mouseY <= y+h
-  && mouseClick == true) { 
+  && mouseClick == true) {
+    mouseClick = false; 
     return true;
   }
   
@@ -96,7 +98,6 @@ boolean rectClicked(int x, int y, int w, int h) {
 
 void mouseClicked() {
   
-
   mouseClick = true;
 }
 
