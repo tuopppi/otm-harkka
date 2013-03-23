@@ -26,14 +26,8 @@ void setup() {
 }
 
 void draw() {
-  
-  println(sivupalkki._valikonNappiPohjassa);
-  
   PVector grid_coord = kentta.get_coord(mouseX, mouseY);
-  
- 
   kentta.draw();
-  
  
   //piirretään kentälle tornit
   for(int i=0; i<tornienLkm; ++i) {
@@ -63,7 +57,8 @@ void mouseClicked() {
   if(mouseX > sivupalkki.offset.x) {    //jos painetaan valikon nappia...
     sivupalkki.mouseClicked();
   } 
-  else if(sivupalkki._valikonNappiPohjassa == true && pelaaja.muuta_rahoja(-260)) { //rakennustilanne. Onko pelaajalla rahaa?
+  else if(sivupalkki._valikonNappiPohjassa == true && 
+          pelaaja.muuta_rahoja(-tornit[tornienLkm-1].hinta)) { //rakennustilanne. Onko pelaajalla rahaa?
       tornit[tornienLkm-1].lock();
       sivupalkki._valikonNappiPohjassa = false;
   }

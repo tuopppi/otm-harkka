@@ -1,16 +1,41 @@
 /* Geneerinen torni, tästä voi erikoistaa erilaisia torneja */
-class Tower {
+public class Tower {
   int _x, _y;
   int _width = 50;
   int _level = 1;
   boolean _locked = false;
   boolean _draw_info = false;
   color _color;
+  String nimi;
+  int hinta;
   
-  Tower(int pos_x, int pos_y, color vari) {
-    _x = pos_x;
-    _y = pos_y;
-    _color = vari;
+  static final int puna_idx = 1;
+  static final int sini_idx = 2;
+  static final int vihr_idx = 3;
+      
+  Tower(int type) throws Exception {
+    _x = 0;
+    _y = 0;
+
+	switch(type) {
+	case sini_idx:
+	    _color = color(0,0,255);
+		nimi = "SININEN";
+		hinta = 100;
+		break;
+	case puna_idx:
+	    _color = color(255,0,0);
+		nimi = "PUNAINEN";
+		hinta = 150;
+		break;
+	case vihr_idx:
+	    _color = color(0,255,0);
+		nimi = "VIHREA";
+		hinta = 200;
+		break;
+	default:
+		throw new Exception("Tuntematon tornityyppi"); 
+	}
   }
   
   boolean clicked(int click_x, int click_y) {

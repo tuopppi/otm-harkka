@@ -6,18 +6,13 @@ class Sivupalkki {
   PFont f;
   private Laskuri _laskuri;
   boolean _valikonNappiPohjassa = false;
-  
-  
-  
-
 
   Nappi punaTykkiNappi;
-  static final int puna_idx = 1;
   Nappi vihrTykkiNappi;
-  static final int sini_idx = 2;
   Nappi siniTykkiNappi;
-  static final int vihr_idx = 3;
   
+  // Tämä indeksi vastaa Tower luokan sisällä asetettuja staattisia indeximuuttujia
+  // jotka kertovat tornin tyypin
   int hiiri_napin_paalla_index = 0;
     
   Sivupalkki(Laskuri laskuri) {
@@ -47,13 +42,13 @@ class Sivupalkki {
 	 * päällä hiiri on.
      */
     if(punaTykkiNappi.pressed(translated_x, translated_y)) { 
-      hiiri_napin_paalla_index = puna_idx;
+      hiiri_napin_paalla_index = Tower.puna_idx;
     }
     else if(vihrTykkiNappi.pressed(translated_x, translated_y)) { 
-      hiiri_napin_paalla_index = vihr_idx;
+      hiiri_napin_paalla_index = Tower.vihr_idx;
     }
     else if(siniTykkiNappi.pressed(translated_x, translated_y)) { 
-      hiiri_napin_paalla_index = sini_idx;
+      hiiri_napin_paalla_index = Tower.sini_idx;
     }
     else {
       hiiri_napin_paalla_index = 0;
@@ -63,58 +58,54 @@ class Sivupalkki {
   /* Pääohjelman mouseClicked funktio kutsuu tätä funktiota jos painalluksen koordinaatit
    * ovat sivupalkin alueella */
   void mouseClicked() {
-    int translated_x = mouseX - (int)offset.x;
-    int translated_y = mouseY - (int)offset.y;
-       
-	///KAUPPANAPPIEN PAINAMINEN
-	////punaisen tykin rakennusnappi
-	if(punaTykkiNappi.pressed(translated_x, translated_y)) {      
-	  if(_valikonNappiPohjassa) { tornienLkm--; } //jos jotain nappia on jo painettu kun tätä nappia painetaan, hävitetään edellinen torni
-	  
-	  tornit[tornienLkm] = new Tower(0, 0, color(255, 0, 0));
-	  tornienLkm++;
-	  _valikonNappiPohjassa = true;
-	}
-	
-	////vihreän tykin rakennusnappi
-	if(vihrTykkiNappi.pressed(translated_x, translated_y)) {
-	  if(_valikonNappiPohjassa) { tornienLkm--; }
-	  
-	  tornit[tornienLkm] = new Tower(0, 0, color(0, 255, 0));
-	  tornienLkm++;
-	  _valikonNappiPohjassa = true;
-	}
-	
-	////sinisen tykin rakennusnappi
-	if(siniTykkiNappi.pressed(translated_x, translated_y)) {
-	  if(_valikonNappiPohjassa) { tornienLkm--; }
-	  
-	  tornit[tornienLkm] = new Tower(0, 0, color(0, 0, 255));
-	  tornienLkm++;
-	  _valikonNappiPohjassa = true;
-	}
-    
+    /* Kun tähän funktioon saavutaan, mouseMoved() funktion perusteella tiedetään jo minkä
+     * napin päällä hiiri on/ei ole, joten sitä ei tarvitse enää uudelleen tutkia
+     */
+
+    // KAUPPANAPPIEN PAINAMINEN
+    if(hiiri_napin_paalla_index > 0) {
+      // jos jotain nappia on jo painettu kun tätä nappia painetaan, hävitetään edellinen torni
+      if(_valikonNappiPohjassa) { tornienLkm--; } 
+
+      try {
+        tornit[tornienLkm] = new Tower(hiiri_napin_paalla_index);
+      } catch(Exception e) {
+        // rakentaja heittää poikkeuksen jos hiiri_napin_paalla 
+        // indeksia ei tunnisteta
+        print(e);
+        return;
+      }
+      
+      tornienLkm++;
+      _valikonNappiPohjassa = true;
+    }
   }
   
-  void draw_torni_info() {
-    /* piirretään laatikko jossa voidaan näyttää rakennettavissa olevien 
-     * tornien tietoja */
-    int offset_x = 20;
-    int offset_y = 220;
-    fill(230);
-    rect(offset_x, offset_y, 160, 160);
+  /* Piirretään hiiren alla olevan torninappulan tiedot
+   */
+  void draw_torni_info() {   
+    if(hiiri_napin_paalla_index > 0) {
+      Tower infotw;
+      try {
+        infotw = new Tower(hiiri_napin_paalla_index);
+      } catch(Exception e) {
+        // rakentaja heittää poikkeuksen jos hiiri_napin_paalla 
+        // indeksia ei tunnisteta
+        print(e);
+        return;
+      }
     
-    fill(20); // tekstin väri
-    switch(hiiri_napin_paalla_index) {
-      case puna_idx:
-        text("PUNAINEN", offset_x + 10, offset_y + 20);  
-        break;
-      case sini_idx:
-        text("SININEN", offset_x + 10, offset_y + 20);  
-        break;
-      case vihr_idx:
-        text("VIHREÄ", offset_x + 10, offset_y + 20);  
-        break;
+      /* piirretään laatikko jossa voidaan näyttää rakennettavissa olevien 
+       * tornien tietoja */
+      int offset_x = 20;
+      int offset_y = 220;
+      fill(230);
+      rect(offset_x, offset_y, 160, 160);
+
+      // Tulostetaan tiedot
+      fill(20);
+      text(infotw.nimi, offset_x + 10, offset_y + 20);  
+      text(infotw.hinta, offset_x + 10, offset_y + 40);  
     }
   }
   
@@ -143,18 +134,9 @@ class Sivupalkki {
     vihrTykkiNappi.draw();
     siniTykkiNappi.draw();
     
-    println(tornienLkm);
- 
-    //Valitun (kentältä/kaupasta) tykin tiedot
-	
-	// indexi on nolla jos hiiri ei ole napin päällä
-	if(hiiri_napin_paalla_index > 0) {
-		
-		draw_torni_info();
-	}
-	
-    //Kentän numero
+    draw_torni_info();
     
+    //Kentän numero
     
   }
   
