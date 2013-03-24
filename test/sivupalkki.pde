@@ -68,7 +68,12 @@ class Sivupalkki {
       if(_valikonNappiPohjassa) { tornienLkm--; } 
 
       try {
-        tornit[tornienLkm] = new Tower(hiiri_napin_paalla_index);
+        Tower uusi = new Tower(hiiri_napin_paalla_index);
+        if(pelaaja.get_rahat() >= uusi.hinta) {
+          tornit[tornienLkm] = uusi;
+          tornienLkm++;
+          _valikonNappiPohjassa = true;
+        }
       } catch(Exception e) {
         // rakentaja heittää poikkeuksen jos hiiri_napin_paalla 
         // indeksia ei tunnisteta
@@ -76,8 +81,7 @@ class Sivupalkki {
         return;
       }
       
-      tornienLkm++;
-      _valikonNappiPohjassa = true;
+      
     }
   }
   
