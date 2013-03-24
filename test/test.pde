@@ -1,3 +1,6 @@
+PFont valikkoFontti = createFont("Comic Sans MS", 60, true);
+//käytetään comicsanssia valikossa (ja vähän muuallakin)
+
 Tower[] tornit;
 int tornienLkm = 0;
 
@@ -15,7 +18,7 @@ void setup() {
   size(800, 600);
   
   laskuri = new Laskuri();
-  kentta = new Kentta();
+  kentta = new Kentta(color(0,0,200), color(200,0,0));
   sivupalkki = new Sivupalkki(laskuri);
 
   //taulukko torneista (kentällä maksimissaan (teoriassa) 12*12=124 tornia)

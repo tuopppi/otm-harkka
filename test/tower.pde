@@ -1,3 +1,7 @@
+static final int PUNAHINTA = 100;
+static final int SINIHINTA = 150;
+static final int VIHRHINTA = 200;
+
 /* Geneerinen torni, tästä voi erikoistaa erilaisia torneja */
 public class Tower {
   int _x, _y;
@@ -21,17 +25,17 @@ public class Tower {
 	case sini_idx:
 	    _color = color(0,0,255);
 		nimi = "SININEN";
-		hinta = 100;
+		hinta = SINIHINTA;
 		break;
 	case puna_idx:
 	    _color = color(255,0,0);
 		nimi = "PUNAINEN";
-		hinta = 150;
+		hinta = PUNAHINTA;
 		break;
 	case vihr_idx:
 	    _color = color(0,255,0);
 		nimi = "VIHREA";
-		hinta = 200;
+		hinta = VIHRHINTA;
 		break;
 	default:
 		throw new Exception("Tuntematon tornityyppi"); 

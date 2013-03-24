@@ -104,6 +104,7 @@ class Sivupalkki {
 
       // Tulostetaan tiedot
       fill(20);
+      textAlign(LEFT);
       text(infotw.nimi, offset_x + 10, offset_y + 20);  
       text(infotw.hinta, offset_x + 10, offset_y + 40);  
     }
@@ -113,31 +114,64 @@ class Sivupalkki {
     translate(offset.x, offset.y);
      
     stroke(0);
-    fill(200);
+    fill(kentta._taustaVari);
     rectMode(CORNER);
     rect(10, 10, 200-20, height-20, 5);
-    text(_level, 20, 20);
     
-    //Ylimpänä sivupalkissa on aika    
-    fill(20);
+    //Ylimpänä sivupalkissa on aika
     
-    text("Seuraava aalto:",30,40);  
-    text(_laskuri.getTime(),30,60);  //Display Text
-    text("s",45,60);
+    pushMatrix();
+  
+    textAlign(CENTER);
+    fill(kentta._reittiVari);
+    
+    textFont(valikkoFontti, 16);
+    text("Seuraava aalto",100,40);
+    
+    textFont(valikkoFontti, 60);
+    text(_laskuri.getTime(),100,105);  //Display Text
+    //text("s",45,60);
     
     //Rahatilanne
-    text("Rahat:",30,80);
-    text(pelaaja.get_rahat(), 70, 80);
+    
+    textFont(valikkoFontti, 16);
+    textAlign(LEFT);
+    text("Rahat:",50,140);
+    textAlign(RIGHT);
+    text(pelaaja.get_rahat(), 140, 140);
+    
+    popMatrix();
     
     //Ostettavat tykit (KAUPPA)
     punaTykkiNappi.draw();
     vihrTykkiNappi.draw();
     siniTykkiNappi.draw();
     
+    if(pelaaja._rahat < PUNAHINTA) { piirraRuksi(punaTykkiNappi); }
+    if(pelaaja._rahat < SINIHINTA) { piirraRuksi(siniTykkiNappi); }
+    if(pelaaja._rahat < VIHRHINTA) { piirraRuksi(vihrTykkiNappi); }
+    
     draw_torni_info();
     
     //Kentän numero
     
+    textAlign(CENTER);
+    fill(kentta._reittiVari);
+    textFont(valikkoFontti, 16);
+    text("Kenttä",100,440);
+    
+    textFont(valikkoFontti, 60);
+    text(_level, 100, 500);
+        
+  }
+  
+  void piirraRuksi(Nappi nappi) {
+    
+    strokeWeight(10);
+    stroke(0);
+    line(nappi._x, nappi._y, nappi._x+50, nappi._y+50);
+    line(nappi._x, nappi._y+50, nappi._x+50, nappi._y);
+    strokeWeight(1);
   }
   
 }

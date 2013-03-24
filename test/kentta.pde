@@ -5,7 +5,14 @@ class Kentta {
   private List<Ormy> _hirviot;
   private Laskuri _hirvio_viesti_laskuri;
   
-  Kentta() {
+  private color _taustaVari;
+  private color _reittiVari;
+    
+  Kentta(color taustaVari, color reittiVari) {
+    
+    _taustaVari = taustaVari;
+    _reittiVari = reittiVari;
+    
     _hirvio_viesti_laskuri = new Laskuri();
     laskuri.setTime(2); // ensimmäinen aalto 2s päästä
     _hirvio_viesti_laskuri.setTime(0); // näytä varoitusviesti
@@ -70,14 +77,14 @@ class Kentta {
   
   void piirra_reittiruutu(PVector kk) {
     noStroke();
-    fill(212,178,68);
+    fill(_reittiVari);
     rectMode(CORNER);
     rect(kk.x*50, kk.y*50, 50, 50);
   }
   
   void draw() {
     
-    background(140,199,78); // kentän taustaväri (vihreä)
+    this.piirraTausta();
     
     // Väritellään reitin ruudut uudelleen, koska niiden yli on kulkenut örmyjä jotka muuten jättävät 
     // värivanan peräänsä
@@ -111,10 +118,37 @@ class Kentta {
     
     // Kun viestilaskuri menee nollaan näytään varoitusviesti
     if(_hirvio_viesti_laskuri.getTime() <= 0) {
-      fill(0);
+      fill(_reittiVari);
+      textFont(valikkoFontti, 16);
+      textAlign(LEFT);
       text("UUSI AALTO STARTTAA PIAN", 10, 20);
     }
 
+  }
+  
+  private void piirraTausta() {
+    //20*20 pikseleistä jotain hienoa _taustaVariin liittyvää
+    noStroke();
+    
+    final int koko = 20;
+      
+    int aika1 = (millis()/100)%500 + 12;
+    if(aika1 > 256) {
+      aika1 = 256 - (aika1 - 256);
+    }
+      
+    pushMatrix();
+    translate(width/2, 0);
+    for(int y = 0; y < height/koko; ++y) {
+      for(int x = width/(-2*koko); x < width/(2*koko); ++x) {
+        //huippuunsa viritetty matrix-efektialgoritmi
+        fill(((red(_taustaVari)*sin(-1*sqrt(y*aika1)/200-x*aika1/200)*aika1/10))%255-230,
+                 ((green(_taustaVari)*sin(-1*sqrt(y*aika1)/200-x*aika1/200)*aika1/10)%255)-230,
+                 ((blue(_taustaVari)*sin(-1*sqrt(y*aika1)/200-x*aika1/200)*aika1/10)%255)-230);
+        rect(x*koko, y*koko, koko, koko);
+      }
+    }
+    popMatrix();
   }
   
 }
