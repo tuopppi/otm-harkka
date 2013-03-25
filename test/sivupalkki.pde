@@ -5,11 +5,10 @@ class Sivupalkki {
   int _level = 0;
   PFont f;
   private Laskuri _laskuri;
-  boolean _valikonNappiPohjassa = false;
 
-  Nappi punaTykkiNappi;
-  Nappi vihrTykkiNappi;
-  Nappi siniTykkiNappi;
+  private Nappi punaTykkiNappi;
+  private Nappi vihrTykkiNappi;
+  private Nappi siniTykkiNappi;
   
   // Tämä indeksi vastaa Tower luokan sisällä asetettuja staattisia indeximuuttujia
   // jotka kertovat tornin tyypin
@@ -37,17 +36,16 @@ class Sivupalkki {
     int translated_x = mouseX - (int)offset.x;
     int translated_y = mouseY - (int)offset.y;
     
-	/* Tarkistetaan onko hiiri jonkin napin päällä ja asetetaan 
-	 * hiiri_napin_paalla_index muuttuja vastaamaan sitä nappia jonka 
-	 * päällä hiiri on.
-     */
-    if(punaTykkiNappi.pressed(translated_x, translated_y)) { 
+    /* Tarkistetaan onko hiiri jonkin napin päällä ja asetetaan 
+     * hiiri_napin_paalla_index muuttuja vastaamaan sitä nappia jonka 
+     * päällä hiiri on. */
+    if(punaTykkiNappi.mouseOver(translated_x, translated_y)) { 
       hiiri_napin_paalla_index = Tower.puna_idx;
     }
-    else if(vihrTykkiNappi.pressed(translated_x, translated_y)) { 
+    else if(vihrTykkiNappi.mouseOver(translated_x, translated_y)) { 
       hiiri_napin_paalla_index = Tower.vihr_idx;
     }
-    else if(siniTykkiNappi.pressed(translated_x, translated_y)) { 
+    else if(siniTykkiNappi.mouseOver(translated_x, translated_y)) { 
       hiiri_napin_paalla_index = Tower.sini_idx;
     }
     else {
@@ -59,20 +57,15 @@ class Sivupalkki {
    * ovat sivupalkin alueella */
   void mouseClicked() {
     /* Kun tähän funktioon saavutaan, mouseMoved() funktion perusteella tiedetään jo minkä
-     * napin päällä hiiri on/ei ole, joten sitä ei tarvitse enää uudelleen tutkia
-     */
-
+     * napin päällä hiiri on/ei ole, joten sitä ei tarvitse enää uudelleen tutkia */
+     
     // KAUPPANAPPIEN PAINAMINEN
     if(hiiri_napin_paalla_index > 0) {
       // jos jotain nappia on jo painettu kun tätä nappia painetaan, hävitetään edellinen torni
-      if(_valikonNappiPohjassa) { tornienLkm--; } 
-
       try {
         Tower uusi = new Tower(hiiri_napin_paalla_index);
         if(pelaaja.get_rahat() >= uusi.hinta) {
-          tornit[tornienLkm] = uusi;
-          tornienLkm++;
-          _valikonNappiPohjassa = true;
+          kentta.aloitaRakentaminen(uusi);
         }
       } catch(Exception e) {
         // rakentaja heittää poikkeuksen jos hiiri_napin_paalla 
@@ -80,8 +73,7 @@ class Sivupalkki {
         print(e);
         return;
       }
-      
-      
+
     }
   }
   

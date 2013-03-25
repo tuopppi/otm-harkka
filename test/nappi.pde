@@ -20,7 +20,7 @@ class Nappi {
   /* onko nappia painettu
    * @clickx, @clicky: painalluken koordinaatti suhteessa nappikoordinaattien nollakohtaan
    */
-  boolean pressed(int clickx, int clicky) {
+  boolean mouseOver(int clickx, int clicky) {
     return (clickx > _x && clickx < _x + _w &&
             clicky > _y && clicky < _y + _h);
   }
