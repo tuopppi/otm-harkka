@@ -85,6 +85,8 @@ class Kentta {
     this.piirraReitti();
     this.piirraHirviot();
     this.piirraTornit();
+
+    this.ammuTorneilla();
     
     /* Hirviöiden spawnaamisesta vastaa @laskuri
      * @_hirvio_viesti_laskuri asetetaan laukeamaan pari sekunttia ennen @laskuria
@@ -151,6 +153,23 @@ class Kentta {
       temp_torni.draw();
     }
   }
+
+  private void ammuTorneilla() {
+    if(_hirviot.size() > 0) {
+      // järjestetään ampumista varten
+      Collections.sort(_hirviot);
+
+      // Ensimmäisen hirviön koordinaatti
+      PVector kohde = _hirviot.get(0).getXYPosition();
+
+      // Kaikki tornit ampuu sitä
+      Iterator torni_it = _rakennetut.iterator();
+      while(torni_it.hasNext()) {
+        Tower t = (Tower)torni_it.next();
+        t.ammu(kohde);
+      }
+    }
+  }
   
   private void piirraTausta() {
     //20*20 pikseleistä jotain hienoa _taustaVariin liittyvää
@@ -178,8 +197,8 @@ class Kentta {
   }
 
   private void spawnaaHirviot() {
-    for(int i = 10; i < 80; i++) {
-      _hirviot.add(new Ormy(_reitti, i*10, color(i*10 % 255)));
+    for(int i = 0; i < 10; i++) {
+      _hirviot.add(new Ormy(_reitti, (int)random(200, 400), color(i*10 % 255)));
     }
   }
   

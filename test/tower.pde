@@ -76,17 +76,29 @@ public class Tower {
       _y = (int)k.y*50+25;
     }
   }
+
+  /* Piirretään viiva tornista kohteeseen */
+  void ammu(PVector kohde) {
+    pushMatrix();
+    strokeWeight(3);
+    stroke(_color);
+    line(_x, _y, kohde.x, kohde.y);
+    popMatrix();
+  }
   
   void draw() {
-      /* Perustornin piirtäminen */
+    /* Perustornin piirtäminen */
+    strokeWeight(1);
     stroke(0);
     fill(255);
     ellipse(_x, _y, _width, _width);
     
+    /* TODO: jos haluaa että tornit pyörii ampumissuunnan mukana tätä pitää fixata
     rectMode(CENTER);
     fill(red(_color)-64, green(_color)-64, blue(_color)-64);
     rect(_x, _y - 20, 20, 20, 4);
-    
+    */
+
     fill(_color);
     ellipse(_x, _y, _width - 10, _width - 10);
   }
