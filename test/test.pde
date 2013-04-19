@@ -1,6 +1,8 @@
 //käytetään comicsanssia valikossa (ja vähän muuallakin)
 PFont valikkoFontti = createFont("Comic Sans MS", 60, true);
 
+static final int jotaki = 300;// git testi, tata ei tarvi mihinkaan
+
 Sivupalkki sivupalkki;
 Kentta kentta;
 Pelaaja pelaaja;
