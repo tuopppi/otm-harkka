@@ -7,6 +7,8 @@ class Kentta {
   private Tower temp_torni = null;
 
   private Laskuri _hirvio_viesti_laskuri;
+
+  private int taso = 1;
   
   private color _taustaVari;
   private color _reittiVari;
@@ -66,9 +68,6 @@ class Kentta {
 
     }
 
-    
-    
-    
     //jos ei reitillä eikä toisen tornin päällä -> true
     return !_reitti.contains(ruutu_koordinaatti) && !toisenTorninPaalle;
   }
@@ -95,8 +94,10 @@ class Kentta {
      * @_hirvio_viesti_laskuri asetetaan laukeamaan pari sekunttia ennen @laskuria
      * jolloin näytetään varoitusviesti. 
      */
-    if(laskuri.getTime() <= 0) {
-      spawnaaHirviot();
+    if(laskuri.getTime() <= 0 || _hirviot.size() == 0) {
+      spawnaaHirviot(taso);
+      sivupalkki.set_level(taso);
+      taso += 1;
       int seuraava_aalto = 8;
       laskuri.setTime(seuraava_aalto);
       _hirvio_viesti_laskuri.setTime(seuraava_aalto - 3); // näytä varoitusviesti 3s ennen aaltoa
@@ -180,13 +181,19 @@ class Kentta {
       Collections.sort(_hirviot);
 
       // Ensimmäisen hirviön koordinaatti
-      PVector kohde = _hirviot.get(0).getXYPosition();
+      Ormy kohde = _hirviot.get(0);
        
       // Kaikki tornit ampuu sitä
       Iterator torni_it = _rakennetut.iterator();
       while(torni_it.hasNext()) {
         Tower t = (Tower)torni_it.next();
-        t.ammu(kohde);
+
+        // Paluuarvo true, jos kohde on saatu tuhottua
+        // tällöin lasketaan uusi kohde (seuraavalla kierroksella)
+        // ja jatketaan sen tuhoamista
+        if(t.ammu(kohde)){
+          break;
+        }
       }
     }
   }
@@ -216,8 +223,8 @@ class Kentta {
     popMatrix();
   }
 
-  private void spawnaaHirviot() {
-    for(int i = 0; i < 10; i++) {
+  private void spawnaaHirviot(int maara) {
+    for(int i = 0; i < maara; i++) {
       _hirviot.add(new Ormy(_reitti, (int)random(200, 400), color(i*10 % 255)));
     }
 

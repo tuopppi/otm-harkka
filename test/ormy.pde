@@ -34,6 +34,10 @@ class Ormy  implements Comparable {
     }
   }
 
+  void vahingoita(int vahinko) {
+    _hitpoints -= vahinko;
+  }
+
   // se joka on lähimpänä maaliruutua tulee listassa ensimmäiseksi
   int compareTo(Object toinen) {
     return ((Ormy)toinen).getPosition() - this.getPosition();

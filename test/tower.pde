@@ -79,13 +79,22 @@ public class Tower {
     }
   }
 
-  /* Piirretään viiva tornista kohteeseen */
-  void ammu(PVector kohde) {
+  /* Piirretään viiva tornista kohteeseen 
+     jos kohde tuhotaan, palautetaan true,
+     muuten false */
+  boolean ammu(Ormy kohde) {
+    PVector sijainti = kohde.getXYPosition();
+    kohde.vahingoita(1);
+    if(!kohde.elossa()) {
+      pelaaja.muuta_rahoja(1);
+      return true;
+    }
     pushMatrix();
     strokeWeight(3);
     stroke(_color);
-    line(_x, _y, kohde.x, kohde.y);
+    line(_x, _y, sijainti.x, sijainti.y);
     popMatrix();
+    return false;
   }
   
   void draw() {
@@ -104,7 +113,7 @@ public class Tower {
 
     
     fill(_color);
-    ellipse(_x, _y, _width - 10, _width - 10);
+    ellipse(_x, _y, _width - 20, _width - 20);
   }
 
 }
