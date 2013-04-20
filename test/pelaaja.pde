@@ -6,7 +6,7 @@ class Pelaaja {
   Pelaaja(String nimi) {
     _nimi = nimi;
     _rahat = 1000;
-    _elamat = 1;
+    _elamat = 5;
   }
   
   String get_nimi() {

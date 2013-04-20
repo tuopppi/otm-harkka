@@ -116,10 +116,14 @@ class Kentta {
 
   private void piirraHirviot() {
     // Tarkistetaan onko hirviö kuollut, jos on poistetaan listalta
-    Iterator hirviot_it = _hirviot.iterator();
-    while(hirviot_it.hasNext()) {
-      Ormy o = (Ormy)(hirviot_it.next());
-      o.draw();
+    Iterator hirvio_it = _hirviot.iterator();
+    while(hirvio_it.hasNext()) {
+      Ormy o = (Ormy)(hirvio_it.next()); // next() täytyy kutsua ENNEN poistoa
+      if(o.elossa()) {
+        o.draw();
+      } else {
+        hirvio_it.remove();
+      }
     }
   }
 
@@ -143,7 +147,6 @@ class Kentta {
     boolean infoPiirretaan = false;
     
     while(torni_it.hasNext()) { 
-    
       Tower t = (Tower)torni_it.next();
       t.draw();
       

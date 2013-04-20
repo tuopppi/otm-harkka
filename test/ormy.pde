@@ -1,6 +1,6 @@
 import java.util.List;
 
-class Ormy  implements Comparable {
+class Ormy implements Comparable {
 
   private List<PVector> _reitti;
   // Monennessako ruudussa ollaan reitillä
