@@ -7,6 +7,7 @@ Sivupalkki sivupalkki;
 Kentta kentta;
 Pelaaja pelaaja;
 Laskuri aalto_laskuri;
+Lopetusruutu lopetusruutu;
 
 void setup() {
   size(800, 600);
@@ -14,14 +15,21 @@ void setup() {
   aalto_laskuri = new Laskuri();
   kentta = new Kentta(color(0,0,200), color(200,0,0));
   sivupalkki = new Sivupalkki();
-  
+  lopetusruutu = new Lopetusruutu(color(0,0,200), color(200,0,0));
   // TODO: siirrä oikeaan paikkaan tila systeemissä
   pelaaja = new Pelaaja("Pelaaja1");
 }
 
 void draw() {
-  kentta.draw();
-  sivupalkki.draw();
+  
+  if ( pelaaja.get_elamat() > 0){
+    kentta.draw();
+    sivupalkki.draw();  
+  }  
+  else{   
+    lopetusruutu.draw();     
+  }
+  
 }
 
 void mouseMoved() {

@@ -159,6 +159,14 @@ class Sivupalkki {
     textAlign(RIGHT);
     text(pelaaja.get_rahat(), 140, 140);
     
+    // Pelaajan elamat 
+    
+    textFont(valikkoFontti, 16);
+    textAlign(LEFT);
+    text("Elämät:",50,540);
+    textAlign(RIGHT);
+    text(pelaaja.get_elamat(), 140, 540);
+    
     popMatrix();
     
     //Ostettavat tykit (KAUPPA)

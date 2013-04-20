@@ -1,10 +1,12 @@
 class Pelaaja {
   String _nimi;
   int _rahat;
+  int _elamat;
   
   Pelaaja(String nimi) {
     _nimi = nimi;
     _rahat = 1000;
+    _elamat = 1;
   }
   
   String get_nimi() {
@@ -13,6 +15,12 @@ class Pelaaja {
   
   int get_rahat() {
     return _rahat;
+  }
+  int get_elamat() {
+    return _elamat;
+  }
+  void vahenna_elamia(){
+     _elamat--;
   }
   
   // Lisää (+) tai vähentää (-) pelaajan varallisuutta. Paluuarvo kertoo onnistuiko tapahtuma.
