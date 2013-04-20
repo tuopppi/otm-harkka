@@ -17,41 +17,43 @@ public class Tower {
   static final int sini_idx = 2;
   static final int vihr_idx = 3;
       
+       
   Tower(int type) throws Exception {
     _x = 0;
     _y = 0;
 
-	switch(type) {
-	case sini_idx:
-	    _color = color(0,0,255);
-		nimi = "SININEN";
-		hinta = SINIHINTA;
-		break;
-	case puna_idx:
-	    _color = color(255,0,0);
-		nimi = "PUNAINEN";
-		hinta = PUNAHINTA;
-		break;
-	case vihr_idx:
-	    _color = color(0,255,0);
-		nimi = "VIHREA";
-		hinta = VIHRHINTA;
-		break;
-	default:
-		throw new Exception("Tuntematon tornityyppi"); 
-	}
+  switch(type) {
+  case sini_idx:
+      _color = color(0,0,255);
+    nimi = "SININEN";
+    hinta = SINIHINTA;
+    break;
+  case puna_idx:
+      _color = color(255,0,0);
+    nimi = "PUNAINEN";
+    hinta = PUNAHINTA;
+    break;
+  case vihr_idx:
+      _color = color(0,255,0);
+    nimi = "VIHREA";
+    hinta = VIHRHINTA;
+    break;
+  default:
+    throw new Exception("Tuntematon tornityyppi"); 
+  }
   }
   
-  boolean clicked(int click_x, int click_y) {
+
+  boolean mouseOverlap() {
       int maxx = _x + _width/2;
       int minx = _x - _width/2;
       int maxy = _y + _width/2;
       int miny = _y - _width/2;
       
-      if( maxx > click_x && 
-          minx < click_x &&
-          maxy > click_y && 
-          miny < click_y) {
+      if( maxx > mouseX && 
+          minx < mouseX &&
+          maxy > mouseY && 
+          miny < mouseY) {
         return true;
       } else { 
         return false;
@@ -89,6 +91,7 @@ public class Tower {
   void draw() {
     /* Perustornin piirtäminen */
     strokeWeight(1);
+
     stroke(0);
     fill(255);
     ellipse(_x, _y, _width, _width);
@@ -99,6 +102,7 @@ public class Tower {
     rect(_x, _y - 20, 20, 20, 4);
     */
 
+    
     fill(_color);
     ellipse(_x, _y, _width - 10, _width - 10);
   }

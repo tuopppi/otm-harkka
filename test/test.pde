@@ -25,8 +25,12 @@ void draw() {
 }
 
 void mouseMoved() {
+  //onko hiiri sivupalkin napin päällä?
   if(mouseX > sivupalkki.offset.x) {
     sivupalkki.mouseMoved();
+  }
+  else { //onko hiiri kentän päällä?
+    kentta.mouseMoved();
   }
 }
 

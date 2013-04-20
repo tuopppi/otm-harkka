@@ -1,6 +1,7 @@
 import java.util.List;
 
 class Ormy  implements Comparable {
+
   private List<PVector> _reitti;
   // Monennessako ruudussa ollaan reitillä
   private int _pos_indx = 0; 
@@ -9,8 +10,9 @@ class Ormy  implements Comparable {
   private int _nopeus;
   private int _prev_move_time = millis();
   private color _vari;
-  private int _hitpoints; 
+  int _hitpoints; 
   private PVector _xy_position;
+ 
     
   Ormy(List<PVector> reitti, int nopeus, color vari) {
     _reitti = reitti;
@@ -23,9 +25,11 @@ class Ormy  implements Comparable {
     this.move();
     
     if(elossa()) {
+      
       _xy_position = smooth_position_xy();
       
       fill(_vari);
+     
       ellipse(_xy_position.x, _xy_position.y, 20, 20);
     }
   }

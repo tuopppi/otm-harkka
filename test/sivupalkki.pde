@@ -10,6 +10,8 @@ class Sivupalkki {
   private Nappi vihrTykkiNappi;
   private Nappi siniTykkiNappi;
   
+  private Tower infoTorni; //torni josta piirretään inforuutua, muutoin null
+  
   // Tämä indeksi vastaa Tower luokan sisällä asetettuja staattisia indeximuuttujia
   // jotka kertovat tornin tyypin
   int hiiri_napin_paalla_index = 0;
@@ -77,9 +79,32 @@ class Sivupalkki {
     }
   }
   
-  /* Piirretään hiiren alla olevan torninappulan tiedot
+
+  /* Piirretään hiiren alla olevan tornin (kentällä olevan) tiedot
    */
-  void draw_torni_info() {   
+
+  void draw_torni_info() {
+     
+      if(infoTorni == null) {
+        
+        return;
+      }
+    
+      int offset_x = 20;
+      int offset_y = 220;
+      fill(230);
+      rect(offset_x, offset_y, 160, 160);
+
+      // Tulostetaan tiedot
+      fill(20);
+      textAlign(LEFT);
+      text(infoTorni.nimi, offset_x + 10, offset_y + 20);  
+      text(infoTorni.hinta, offset_x + 10, offset_y + 40);
+  }
+  
+  /* Piirretään hiiren alla olevan tornin ostonappulan tiedot
+   */
+  void draw_osto_info() {   
     if(hiiri_napin_paalla_index > 0) {
       Tower infotw;
       try {
@@ -147,8 +172,10 @@ class Sivupalkki {
     if(pelaaja._rahat < SINIHINTA) { piirraRuksi(siniTykkiNappi); }
     if(pelaaja._rahat < VIHRHINTA) { piirraRuksi(vihrTykkiNappi); }
     
+    draw_osto_info();
     draw_torni_info();
     
+        
     //Kentän numero
     
     textAlign(CENTER);
@@ -170,5 +197,15 @@ class Sivupalkki {
     strokeWeight(1);
   }
   
+  void asetaTorninInfonPiirto(Tower torni) {
+    
+    infoTorni = torni;
+  }    
+  
+  void kiellaTorninInfonPiirto() {
+    
+    infoTorni = null;
+  }
 }
+
 

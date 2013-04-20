@@ -66,6 +66,9 @@ class Kentta {
 
     }
 
+    
+    
+    
     //jos ei reitillä eikä toisen tornin päällä -> true
     return !_reitti.contains(ruutu_koordinaatti) && !toisenTorninPaalle;
   }
@@ -136,12 +139,28 @@ class Kentta {
 
   private void piirraTornit() {
     // Piirretään rakennetut tornit
+   
     Iterator torni_it = _rakennetut.iterator();
-    while(torni_it.hasNext()) {
+    boolean infoPiirretaan = false;
+    
+    while(torni_it.hasNext()) { 
+    
       Tower t = (Tower)torni_it.next();
       t.draw();
+      
+      //käsketään sivupalkkia piirtämään tornin tiedot mikäli hiiri on sellaisen
+      //päällä eikä olla rakentamassa uutta
+      if(t.mouseOverlap() && temp_torni == null) {
+        sivupalkki.asetaTorninInfonPiirto(t);
+        infoPiirretaan = true;
+      } 
     }
 
+    
+    if(!infoPiirretaan) {
+      sivupalkki.kiellaTorninInfonPiirto();
+    }
+    
     // Piirretään rakennuksessa oleva torni hiiren kohdalle
     if(temp_torni != null) {
       PVector grid_coord = kentta.get_coord(mouseX, mouseY);
@@ -156,12 +175,13 @@ class Kentta {
 
   private void ammuTorneilla() {
     if(_hirviot.size() > 0) {
+      
       // järjestetään ampumista varten
       Collections.sort(_hirviot);
 
       // Ensimmäisen hirviön koordinaatti
       PVector kohde = _hirviot.get(0).getXYPosition();
-
+       
       // Kaikki tornit ampuu sitä
       Iterator torni_it = _rakennetut.iterator();
       while(torni_it.hasNext()) {
@@ -200,6 +220,7 @@ class Kentta {
     for(int i = 0; i < 10; i++) {
       _hirviot.add(new Ormy(_reitti, (int)random(200, 400), color(i*10 % 255)));
     }
+
   }
   
   /* Palauttaa pelilaudan koordinaatin joka vastaa hiiren koordinaattia
@@ -216,5 +237,12 @@ class Kentta {
     return tmpcoord;
   }
   
+  void mouseMoved() { //ollaanko liikutettu hiiri pois tornin päältä
+        
+    if(sivupalkki.infoTorni == null) {
+      sivupalkki.kiellaTorninInfonPiirto();
+      sivupalkki.hiiri_napin_paalla_index = 0; //tämä täytyy olla koska muuten info välillä jumiutuu
+    }
+  }   
 }
 
