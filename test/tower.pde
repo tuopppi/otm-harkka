@@ -8,39 +8,43 @@ public class Tower {
   int _width = 50;
   int _level = 1;
   boolean _locked = false;
-  boolean _draw_info = false;
   color _color;
   String nimi;
   int hinta;
+  float range;
+  float dps; // damage per second
+  int prev_shot;
   
   static final int puna_idx = 1;
   static final int sini_idx = 2;
   static final int vihr_idx = 3;
-      
        
   Tower(int type) throws Exception {
     _x = 0;
     _y = 0;
+    range = 200.0;
+    dps = 100.0;
+    prev_shot = 0;
 
-  switch(type) {
-  case sini_idx:
-      _color = color(0,0,255);
-    nimi = "SININEN";
-    hinta = SINIHINTA;
-    break;
-  case puna_idx:
-      _color = color(255,0,0);
-    nimi = "PUNAINEN";
-    hinta = PUNAHINTA;
-    break;
-  case vihr_idx:
-      _color = color(0,255,0);
-    nimi = "VIHREA";
-    hinta = VIHRHINTA;
-    break;
-  default:
-    throw new Exception("Tuntematon tornityyppi"); 
-  }
+    switch(type) {
+    case sini_idx:
+        _color = color(0,0,255);
+      nimi = "SININEN";
+      hinta = SINIHINTA;
+      break;
+    case puna_idx:
+        _color = color(255,0,0);
+      nimi = "PUNAINEN";
+      hinta = PUNAHINTA;
+      break;
+    case vihr_idx:
+        _color = color(0,255,0);
+      nimi = "VIHREA";
+      hinta = VIHRHINTA;
+      break;
+    default:
+      throw new Exception("Tuntematon tornityyppi"); 
+    }
   }
   
 
@@ -79,27 +83,59 @@ public class Tower {
     }
   }
 
-  /* Piirretään viiva tornista kohteeseen 
-     jos kohde tuhotaan, palautetaan true,
-     muuten false */
-  boolean ammu(Ormy kohde) {
-    PVector sijainti = kohde.getXYPosition();
-    kohde.vahingoita(1);
-    if(!kohde.elossa()) {
-      pelaaja.muuta_rahoja(1);
-      return true;
+  /* Piirretään viiva tornista kohteeseen */
+  void ammu(List kohteet) {
+    PVector my_loc = new PVector(_x, _y);
+
+    // Torni etsii kohteen joka on lähinpänä maaliruutua 
+    // ja tornin rangen sisällä
+    Iterator kohde_it = kohteet.iterator();
+    while(kohde_it.hasNext()) {
+      Ormy kohde = (Ormy)kohde_it.next();
+      PVector sijainti = kohde.getXYPosition();
+      float kohteen_etaisyys = PVector.sub(sijainti, my_loc).mag();
+
+      if(kohteen_etaisyys <= range) {
+        // tehdään dps verran vahinkoa kohteeseen
+        // vahinko lasketaan suhteessa edelliseen päivityskertaan
+        // muuten vahinkoa syntyisi nopealla tietokoneella enemmän kuin hitaalla
+
+        if(prev_shot > 0) {
+          float dmg = dps * (millis() - prev_shot) / 1000.0;
+          kohde.vahingoita(dmg);
+        }
+        prev_shot = millis(); // tallennetaan edellinen ampumisaika
+
+        if(!kohde.elossa()) {
+          pelaaja.muuta_rahoja(1);
+          kohde_it.remove();
+          return; // kohde tuhottu
+        }
+
+        // piirretään lasersäde
+        pushMatrix();
+        strokeWeight(3);
+        stroke(_color);
+        line(_x, _y, sijainti.x, sijainti.y);
+        strokeWeight(1);
+        popMatrix();
+
+        return; // kohdetta ei tuhottu
+      }
     }
-    pushMatrix();
-    strokeWeight(3);
-    stroke(_color);
-    line(_x, _y, sijainti.x, sijainti.y);
-    popMatrix();
-    return false;
+
+    prev_shot = 0; // ei torneja rangen sisällä, ei ammuttuja laukauksia
   }
   
   void draw() {
     /* Perustornin piirtäminen */
     strokeWeight(1);
+
+    if(mouseOverlap()) {
+      stroke(128);
+      fill(128,128,128,30.0);
+      ellipse(_x, _y, range*2, range*2);
+    }
 
     stroke(0);
     fill(255);
@@ -114,6 +150,7 @@ public class Tower {
     
     fill(_color);
     ellipse(_x, _y, _width - 20, _width - 20);
+
   }
 
 }

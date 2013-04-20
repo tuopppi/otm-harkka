@@ -10,7 +10,7 @@ class Ormy  implements Comparable {
   private int _nopeus;
   private int _prev_move_time = millis();
   private color _vari;
-  int _hitpoints; 
+  float _hitpoints; 
   private PVector _xy_position;
  
     
@@ -18,7 +18,7 @@ class Ormy  implements Comparable {
     _reitti = reitti;
     _nopeus = nopeus;
     _vari = vari;
-    _hitpoints = 100;
+    _hitpoints = 100.0;
   }
  
   void draw() {
@@ -34,7 +34,7 @@ class Ormy  implements Comparable {
     }
   }
 
-  void vahingoita(int vahinko) {
+  void vahingoita(float vahinko) {
     _hitpoints -= vahinko;
   }
 

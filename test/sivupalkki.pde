@@ -4,7 +4,6 @@ class Sivupalkki {
   
   int _level = 0;
   PFont f;
-  private Laskuri _laskuri;
 
   private Nappi punaTykkiNappi;
   private Nappi vihrTykkiNappi;
@@ -16,8 +15,7 @@ class Sivupalkki {
   // jotka kertovat tornin tyypin
   int hiiri_napin_paalla_index = 0;
     
-  Sivupalkki(Laskuri laskuri) {
-    _laskuri = laskuri;
+  Sivupalkki() {
     offset = new PVector(width-200, 0);
     
     //sivupalkin napit
@@ -150,7 +148,7 @@ class Sivupalkki {
     text("Seuraava aalto",100,40);
     
     textFont(valikkoFontti, 60);
-    text(_laskuri.getTime(),100,105);  //Display Text
+    text(aalto_laskuri.getTime(),100,105);  //Display Text
     //text("s",45,60);
     
     //Rahatilanne

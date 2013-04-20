@@ -33,9 +33,9 @@ class Kentta {
     _rakennetut = new ArrayDeque<Tower>();
 
     _hirvio_viesti_laskuri = new Laskuri();
-    laskuri.setTime(2); // ensimmäinen aalto 2s päästä
+    aalto_laskuri.setTime(2); // ensimmäinen aalto 2s päästä
     _hirvio_viesti_laskuri.setTime(0); // näytä varoitusviesti
-    laskuri.starttaaLaskuri();
+    aalto_laskuri.starttaaLaskuri();
     _hirvio_viesti_laskuri.starttaaLaskuri();
   }
 
@@ -87,19 +87,21 @@ class Kentta {
     this.piirraReitti();
     this.piirraHirviot();
     this.piirraTornit();
-
     this.ammuTorneilla();
-    
-    /* Hirviöiden spawnaamisesta vastaa @laskuri
+    this.tarkistaLaskurit();
+  }
+
+  private void tarkistaLaskurit() {
+    /* Hirviöiden spawnaamisesta vastaa @aalto_laskuri
      * @_hirvio_viesti_laskuri asetetaan laukeamaan pari sekunttia ennen @laskuria
      * jolloin näytetään varoitusviesti. 
      */
-    if(laskuri.getTime() <= 0 || _hirviot.size() == 0) {
+    if(aalto_laskuri.getTime() <= 0 || _hirviot.size() == 0) {
       spawnaaHirviot(taso);
       sivupalkki.set_level(taso);
       taso += 1;
       int seuraava_aalto = 8;
-      laskuri.setTime(seuraava_aalto);
+      aalto_laskuri.setTime(seuraava_aalto);
       _hirvio_viesti_laskuri.setTime(seuraava_aalto - 3); // näytä varoitusviesti 3s ennen aaltoa
     }
     
@@ -117,11 +119,7 @@ class Kentta {
     Iterator hirviot_it = _hirviot.iterator();
     while(hirviot_it.hasNext()) {
       Ormy o = (Ormy)(hirviot_it.next());
-      if(o.elossa()) {
-        o.draw();
-      } else {
-        hirviot_it.remove();
-      }      
+      o.draw();
     }
   }
 
@@ -179,21 +177,12 @@ class Kentta {
       
       // järjestetään ampumista varten
       Collections.sort(_hirviot);
-
-      // Ensimmäisen hirviön koordinaatti
-      Ormy kohde = _hirviot.get(0);
        
       // Kaikki tornit ampuu sitä
       Iterator torni_it = _rakennetut.iterator();
       while(torni_it.hasNext()) {
         Tower t = (Tower)torni_it.next();
-
-        // Paluuarvo true, jos kohde on saatu tuhottua
-        // tällöin lasketaan uusi kohde (seuraavalla kierroksella)
-        // ja jatketaan sen tuhoamista
-        if(t.ammu(kohde)){
-          break;
-        }
+        t.ammu(_hirviot);
       }
     }
   }
@@ -227,7 +216,6 @@ class Kentta {
     for(int i = 0; i < maara; i++) {
       _hirviot.add(new Ormy(_reitti, (int)random(200, 400), color(i*10 % 255)));
     }
-
   }
   
   /* Palauttaa pelilaudan koordinaatin joka vastaa hiiren koordinaattia
@@ -244,12 +232,11 @@ class Kentta {
     return tmpcoord;
   }
   
-  void mouseMoved() { //ollaanko liikutettu hiiri pois tornin päältä
-        
+  void mouseMoved() { 
+    //ollaanko liikutettu hiiri pois tornin päältä 
     if(sivupalkki.infoTorni == null) {
       sivupalkki.kiellaTorninInfonPiirto();
       sivupalkki.hiiri_napin_paalla_index = 0; //tämä täytyy olla koska muuten info välillä jumiutuu
     }
   }   
 }
-
