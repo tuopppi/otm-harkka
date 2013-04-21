@@ -8,6 +8,9 @@ class Sivupalkki {
   private Nappi punaTykkiNappi;
   private Nappi vihrTykkiNappi;
   private Nappi siniTykkiNappi;
+
+  private Nappi paivitaNappi;
+  private Nappi myyNappi;
   
   private Tower infoTorni; //torni josta piirretään inforuutua, muutoin null
   
@@ -22,6 +25,9 @@ class Sivupalkki {
     punaTykkiNappi = new Nappi(20, 150, 50, 50, color(255,0,0));
     vihrTykkiNappi = new Nappi(20+55, 150, 50, 50, color(0,255,0));
     siniTykkiNappi = new Nappi(20+110, 150, 50, 50, color(0,0,255));
+
+    paivitaNappi = new Nappi(0, 0, 140, 30, color(0,0,0));
+    myyNappi     = new Nappi(0, 0, 140, 30, color(0,0,0));
     
     f = createFont("Georgia",10,true); 
     textFont(f,12);   
@@ -41,18 +47,27 @@ class Sivupalkki {
      * päällä hiiri on. */
     if(punaTykkiNappi.mouseOver(translated_x, translated_y)) { 
       hiiri_napin_paalla_index = Tower.puna_idx;
+      kentta.valittu_torni = null; //poistetaan kentältä mahdollinen valinta
     }
     else if(vihrTykkiNappi.mouseOver(translated_x, translated_y)) { 
-      hiiri_napin_paalla_index = Tower.vihr_idx;
+      hiiri_napin_paalla_index = Tower.vihr_idx;    
+      kentta.valittu_torni = null;
     }
     else if(siniTykkiNappi.mouseOver(translated_x, translated_y)) { 
       hiiri_napin_paalla_index = Tower.sini_idx;
+      kentta.valittu_torni = null;
+    }
+    else if(myyNappi.mouseOver(translated_x, translated_y)) {
+      hiiri_napin_paalla_index = -1; //myyNappi
+    }
+    else if(paivitaNappi.mouseOver(translated_x, translated_y)) {
+      hiiri_napin_paalla_index = -2; //paivitaNappi
     }
     else {
       hiiri_napin_paalla_index = 0;
     }  
   }
-  
+    
   /* Pääohjelman mouseClicked funktio kutsuu tätä funktiota jos painalluksen koordinaatit
    * ovat sivupalkin alueella */
   void mouseClicked() {
@@ -75,6 +90,17 @@ class Sivupalkki {
       }
 
     }
+    else if(hiiri_napin_paalla_index == -2 && kentta.valittu_torni != null) { //paivita-nappia painettu
+
+      if(pelaaja.get_rahat() >= kentta.valittu_torni.upgradeHinta()) {
+        pelaaja.muuta_rahoja(-1*kentta.valittu_torni.upgradeHinta());
+        kentta.valittu_torni.upgrade();
+      }
+    }
+    else if(hiiri_napin_paalla_index == -1  && kentta.valittu_torni != null) { //myy-nappia painettu
+        pelaaja.muuta_rahoja(kentta.valittu_torni.myyntiHinta());
+        //kentta.poistaValittuTorni(); :E ebin
+    }
   }
   
 
@@ -83,7 +109,8 @@ class Sivupalkki {
 
   void draw_torni_info() {
      
-      if(infoTorni == null) {
+      if(infoTorni == null) { /*mikäli kentältä ei olla valittu tornia,
+                              ei piirretä mittään*/
         
         return;
       }
@@ -97,7 +124,25 @@ class Sivupalkki {
       fill(20);
       textAlign(LEFT);
       text(infoTorni.nimi, offset_x + 10, offset_y + 20);  
-      text(infoTorni.hinta, offset_x + 10, offset_y + 40);
+      text("Arvo: "+infoTorni.myyntiHinta(), offset_x + 10, offset_y + 40);
+      text("Upgrade: "+infoTorni.upgradeHinta(), offset_x + 10, offset_y + 60);
+
+      //jos torni on valittu (klikattu hiirellä, piirretään myös nappulat)
+      if(infoTorni == kentta.valittu_torni) {
+
+        paivitaNappi.setPosCol(offset_x + 10, offset_y + 85, kentta.valittu_torni._color);
+        paivitaNappi.draw();
+        fill(20);
+        text("Upgrade", offset_x + 45, offset_y + 105);
+        if(pelaaja.get_rahat() < kentta.valittu_torni.upgradeHinta()) {
+          piirraRuksi(paivitaNappi);
+        }
+
+        myyNappi.setPosCol(offset_x + 10, offset_y + 120, kentta.valittu_torni._color);
+        myyNappi.draw();
+        fill(20);
+        text("Myy torni", offset_x + 35, offset_y + 140);
+      }
   }
   
   /* Piirretään hiiren alla olevan tornin ostonappulan tiedot
@@ -125,7 +170,7 @@ class Sivupalkki {
       fill(20);
       textAlign(LEFT);
       text(infotw.nimi, offset_x + 10, offset_y + 20);  
-      text(infotw.hinta, offset_x + 10, offset_y + 40);  
+      text("Ostohinta: "+infotw.hinta, offset_x + 10, offset_y + 40);  
     }
   }
   
@@ -198,8 +243,8 @@ class Sivupalkki {
     
     strokeWeight(10);
     stroke(0);
-    line(nappi._x, nappi._y, nappi._x+50, nappi._y+50);
-    line(nappi._x, nappi._y+50, nappi._x+50, nappi._y);
+    line(nappi._x, nappi._y, nappi._x+nappi._w, nappi._y+nappi._h);
+    line(nappi._x, nappi._y+nappi._h, nappi._x+nappi._w, nappi._y);
     strokeWeight(1);
   }
   

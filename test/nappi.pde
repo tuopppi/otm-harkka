@@ -25,6 +25,13 @@ class Nappi {
             clicky > _y && clicky < _y + _h);
   }
   
+  void setPosCol(int posX, int posY, color vari) {
+
+    _x = posX;
+    _y = posY;
+    _c = vari;
+  }
+
   void draw() {
     fill(_c);
     rect(_x,_y, _w,_h);

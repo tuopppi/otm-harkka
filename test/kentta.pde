@@ -5,6 +5,7 @@ class Kentta {
   private List<Ormy> _hirviot;
   private Deque<Tower> _rakennetut;
   private Tower temp_torni = null;
+  private Tower valittu_torni = null;
 
   private Laskuri _hirvio_viesti_laskuri;
 
@@ -12,6 +13,8 @@ class Kentta {
   
   private color _taustaVari;
   private color _reittiVari;
+
+  boolean mouseClicked = false;
     
   Kentta(color taustaVari, color reittiVari) {
     _taustaVari = taustaVari;
@@ -73,7 +76,11 @@ class Kentta {
   }
 
   void mouseClicked() {
-    //rakennustilanne. Onko pelaajalla rahaa?
+
+    this.mouseClicked = true;
+    valittu_torni = null;
+
+    //rakennustilanne? Onko pelaajalla rahaa?
     if(temp_torni != null && pelaaja.muuta_rahoja(-temp_torni.hinta)) { 
       
       temp_torni.lock();
@@ -89,6 +96,8 @@ class Kentta {
     this.piirraTornit();
     this.ammuTorneilla();
     this.tarkistaLaskurit();
+
+    this.mouseClicked = false; //palautetaan hiiren klikkaus
   }
 
   private void tarkistaLaskurit() {
@@ -142,7 +151,7 @@ class Kentta {
 
   private void piirraTornit() {
     // Piirretään rakennetut tornit
-   
+
     Iterator torni_it = _rakennetut.iterator();
     boolean infoPiirretaan = false;
     
@@ -152,10 +161,25 @@ class Kentta {
       
       //käsketään sivupalkkia piirtämään tornin tiedot mikäli hiiri on sellaisen
       //päällä eikä olla rakentamassa uutta
-      if(t.mouseOverlap() && temp_torni == null) {
-        sivupalkki.asetaTorninInfonPiirto(t);
+      if((t.mouseOverlap() && temp_torni == null)
+        || t == valittu_torni) { //tai jos tornia ollaan klikattu (se on valittu)
+        
         infoPiirretaan = true;
-      } 
+        if(valittu_torni == null) { //jos ei olla painettu ja valittu mitään tornia
+          sivupalkki.asetaTorninInfonPiirto(t);
+        }
+        else {
+          sivupalkki.asetaTorninInfonPiirto(valittu_torni);
+        }
+
+        if(this.mouseClicked && t._wanhaTorni) {
+          //jos kentällä klikattiin hiirtä (ja siis klikattiin vieläpä JO RAKENNETUN tornin päällä)
+          // JA jos torni ei ole vastarakennettu, torni valitaan
+          valittu_torni = t;
+        }
+      }
+      
+      t._wanhaTorni = true; //torni on wanha, se ei ole vastarakennettu eli sitä voidaan klikata kentällä
     }
 
     

@@ -46,7 +46,7 @@ void mouseClicked() {
   if(mouseX > sivupalkki.offset.x) {    //jos painetaan valikon nappia...
     sivupalkki.mouseClicked();
   }
-  else {  
+  else {
     kentta.mouseClicked(); // painettiin kenttää
   }
 }

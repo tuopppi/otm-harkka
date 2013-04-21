@@ -8,6 +8,8 @@ public class Tower {
   int _width = 50;
   int _level = 1;
   boolean _locked = false;
+  boolean _selected = false; //onko tornia klikattu elikkäs onko kauppanäkymä auki
+  boolean _wanhaTorni = false; //onko torni rakennettu alle tick sitten? Jos on, sitä ei voi valita select
   color _color;
   String nimi;
   int hinta;
@@ -22,7 +24,7 @@ public class Tower {
   Tower(int type) throws Exception {
     _x = 0;
     _y = 0;
-    range = 200.0;
+    range = 100.0;
     dps = 100.0;
     prev_shot = 0;
 
@@ -66,6 +68,7 @@ public class Tower {
   
   void upgrade() {
     _level = _level + 1;
+    range = range + 20;
   }
   
   void lock() {
@@ -81,6 +84,18 @@ public class Tower {
       _x = (int)k.x*50+25;
       _y = (int)k.y*50+25;
     }
+  }
+
+  /* Lasketaan paljonko päivitys seuraavalle tasolle maksaa */
+  int upgradeHinta() {
+
+    return (int)(hinta*0.5*_level); //heitin laskukaavan iha päästäni :3
+  }
+
+   /* Lasketaan paljonko päivitys seuraavalle tasolle maksaa */
+  int myyntiHinta() {
+
+    return (int)(hinta*0.8*sqrt(_level)); //heitin laskukaavan iha päästäni :3
   }
 
   /* Piirretään viiva tornista kohteeseen */
@@ -101,7 +116,7 @@ public class Tower {
         // muuten vahinkoa syntyisi nopealla tietokoneella enemmän kuin hitaalla
 
         if(prev_shot > 0) {
-          float dmg = dps * (millis() - prev_shot) / 1000.0;
+          float dmg = dps * _level * (millis() - prev_shot) / 1000.0;
           kohde.vahingoita(dmg);
         }
         prev_shot = millis(); // tallennetaan edellinen ampumisaika
@@ -114,8 +129,11 @@ public class Tower {
 
         // piirretään lasersäde
         pushMatrix();
-        strokeWeight(3);
+        strokeWeight(3*_level);
         stroke(_color);
+        line(_x, _y, sijainti.x, sijainti.y);
+        strokeWeight(1*_level);
+        stroke(255);
         line(_x, _y, sijainti.x, sijainti.y);
         strokeWeight(1);
         popMatrix();
@@ -131,7 +149,7 @@ public class Tower {
     /* Perustornin piirtäminen */
     strokeWeight(1);
 
-    if(mouseOverlap()) {
+    if(mouseOverlap() || this == kentta.valittu_torni) {
       stroke(128);
       fill(128,128,128,30.0);
       ellipse(_x, _y, range*2, range*2);
