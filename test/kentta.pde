@@ -75,6 +75,10 @@ class Kentta {
     return !_reitti.contains(ruutu_koordinaatti) && !toisenTorninPaalle;
   }
 
+  void peruutaRakennus() {
+    temp_torni = null;
+  }
+
   void mouseClicked() {
 
     this.mouseClicked = true;

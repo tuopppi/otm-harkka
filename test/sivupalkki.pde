@@ -26,8 +26,8 @@ class Sivupalkki {
     vihrTykkiNappi = new Nappi(20+55, 150, 50, 50, color(0,255,0));
     siniTykkiNappi = new Nappi(20+110, 150, 50, 50, color(0,0,255));
 
-    paivitaNappi = new Nappi(0, 0, 140, 30, color(0,0,0));
-    myyNappi     = new Nappi(0, 0, 140, 30, color(0,0,0));
+    paivitaNappi = new Nappi(0, 0, 140, 30, color(0,0,0), "Upgrade");
+    myyNappi     = new Nappi(0, 0, 140, 30, color(0,0,0), "Myy torni");
     
     f = createFont("Georgia",10,true); 
     textFont(f,12);   
@@ -104,52 +104,48 @@ class Sivupalkki {
         infoTorni = null;
     }
   }
-  
 
   /* Piirretään hiiren alla olevan tornin (kentällä olevan) tiedot
    */
-
-  void draw_torni_info() {
+  private void draw_torni_info() {
      
-      if(infoTorni == null) { /*mikäli kentältä ei olla valittu tornia,
-                              ei piirretä mittään*/
-        
+      if(infoTorni == null) { 
+        // mikäli kentältä ei olla valittu tornia, ei piirretä mittään
         return;
       }
     
-      int offset_x = 20;
-      int offset_y = 220;
-      fill(230);
-      rect(offset_x, offset_y, 160, 160);
-
       // Tulostetaan tiedot
-      fill(20);
-      textAlign(LEFT);
-      text(infoTorni.nimi, offset_x + 10, offset_y + 20);  
-      text("Arvo: "+infoTorni.myyntiHinta(), offset_x + 10, offset_y + 40);
-      text("Upgrade: "+infoTorni.upgradeHinta(), offset_x + 10, offset_y + 60);
+      String[] kentat = { 
+        "Nimi", infoTorni.nimi, 
+        "Arvo", Integer.toString(infoTorni.myyntiHinta()),
+        "DPS", Float.toString(round(infoTorni.dps)),
+        "Upgrade", Integer.toString(infoTorni.upgradeHinta()),
+      };
+
+      int offset_y = 220;
+      int tietojen_korkeus = this.draw_tietokentat(offset_y, kentat);
 
       //jos torni on valittu (klikattu hiirellä, piirretään myös nappulat)
       if(infoTorni == kentta.valittu_torni) {
-
-        paivitaNappi.setPosCol(offset_x + 10, offset_y + 85, kentta.valittu_torni._color);
+        paivitaNappi.setPosCol(30, 
+                               offset_y + tietojen_korkeus + 10, 
+                               kentta.valittu_torni._color);
         paivitaNappi.draw();
-        fill(20);
-        text("Upgrade", offset_x + 45, offset_y + 105);
         if(pelaaja.get_rahat() < kentta.valittu_torni.upgradeHinta()) {
-          piirraRuksi(paivitaNappi);
+          paivitaNappi.piirraRuksi();
         }
 
-        myyNappi.setPosCol(offset_x + 10, offset_y + 120, kentta.valittu_torni._color);
+        myyNappi.setPosCol(30, 
+                           offset_y + tietojen_korkeus + 50, 
+                           kentta.valittu_torni._color);
         myyNappi.draw();
-        fill(20);
-        text("Myy torni", offset_x + 35, offset_y + 140);
       }
+
   }
   
   /* Piirretään hiiren alla olevan tornin ostonappulan tiedot
-   */
-  void draw_osto_info() {   
+  */
+  private void draw_osto_info() {
     if(hiiri_napin_paalla_index > 0) {
       Tower infotw;
       try {
@@ -161,21 +157,17 @@ class Sivupalkki {
         return;
       }
     
-      /* piirretään laatikko jossa voidaan näyttää rakennettavissa olevien 
-       * tornien tietoja */
-      int offset_x = 20;
-      int offset_y = 220;
-      fill(230);
-      rect(offset_x, offset_y, 160, 160);
-
       // Tulostetaan tiedot
-      fill(20);
-      textAlign(LEFT);
-      text(infotw.nimi, offset_x + 10, offset_y + 20);  
-      text("Ostohinta: "+infotw.hinta, offset_x + 10, offset_y + 40);  
+      String[] kentat = { 
+        "Nimi", infotw.nimi, 
+        "Ostohinta", Integer.toString(infotw.hinta) 
+      };
+      
+      int offset_y = 220;
+      this.draw_tietokentat(offset_y, kentat);
     }
   }
-  
+   
   void draw() {
     translate(offset.x, offset.y);
      
@@ -196,10 +188,8 @@ class Sivupalkki {
     
     textFont(valikkoFontti, 60);
     text(aalto_laskuri.getTime(),100,105);  //Display Text
-    //text("s",45,60);
     
     //Rahatilanne
-    
     textFont(valikkoFontti, 16);
     textAlign(LEFT);
     text("Rahat:",50,140);
@@ -221,14 +211,13 @@ class Sivupalkki {
     vihrTykkiNappi.draw();
     siniTykkiNappi.draw();
     
-    if(pelaaja._rahat < PUNAHINTA) { piirraRuksi(punaTykkiNappi); }
-    if(pelaaja._rahat < SINIHINTA) { piirraRuksi(siniTykkiNappi); }
-    if(pelaaja._rahat < VIHRHINTA) { piirraRuksi(vihrTykkiNappi); }
+    if(pelaaja._rahat < PUNAHINTA) { punaTykkiNappi.piirraRuksi(); }
+    if(pelaaja._rahat < SINIHINTA) { siniTykkiNappi.piirraRuksi(); }
+    if(pelaaja._rahat < VIHRHINTA) { vihrTykkiNappi.piirraRuksi(); }
     
     draw_osto_info();
     draw_torni_info();
-    
-        
+
     //Kentän numero
     
     textAlign(CENTER);
@@ -238,27 +227,37 @@ class Sivupalkki {
     
     textFont(valikkoFontti, 60);
     text(_level, 100, 500);
-        
   }
-  
-  void piirraRuksi(Nappi nappi) {
     
-    strokeWeight(10);
-    stroke(0);
-    line(nappi._x, nappi._y, nappi._x+nappi._w, nappi._y+nappi._h);
-    line(nappi._x, nappi._y+nappi._h, nappi._x+nappi._w, nappi._y);
-    strokeWeight(1);
-  }
-  
   void asetaTorninInfonPiirto(Tower torni) {
-    
     infoTorni = torni;
   }    
   
   void kiellaTorninInfonPiirto() {
-    
     infoTorni = null;
   }
+
+    /* Kentät syötetään pareittain <nimi, arvo>, muuten ei tulostu mitään 
+      palautetaan tulostettujen kenttien korkeus pixeleinä
+    */
+  private int draw_tietokentat(int offset_y, String[] kentat) {
+    int offset_x = 20;
+    int tarvittava_korkeus = kentat.length / 2 * 20;
+    fill(230);
+    rect(offset_x, offset_y, 160, tarvittava_korkeus+10);
+
+    fill(20);
+    textAlign(LEFT);
+    for(int i = 0; 
+        i < kentat.length && kentat.length % 2 == 0;
+        i=i+2) 
+    {
+      text(kentat[i] + ": " + kentat[i+1], 
+           offset_x + 10, // offset + matka vasenpaan reunaan
+           offset_y + (i + 2) * 10);  // offset + matka yläreunaan
+    }
+
+    return tarvittava_korkeus + 10; // + marginaalit
+  }
+  
 }
-
-

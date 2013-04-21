@@ -69,6 +69,7 @@ public class Tower {
   
   void upgrade() {
     _level = _level + 1;
+    dps = dps + log(_level) * 5;
     range = range + 20;
   }
   

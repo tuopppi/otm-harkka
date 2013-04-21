@@ -51,4 +51,9 @@ void mouseClicked() {
   }
 }
 
-
+void keyPressed() {
+  if(key == ESC) {
+    key = 0; // Estää ohjelmaa sulkeutumasta
+    kentta.peruutaRakennus();
+  }
+}
