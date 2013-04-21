@@ -157,8 +157,14 @@ class Kentta {
     
     while(torni_it.hasNext()) { 
       Tower t = (Tower)torni_it.next();
-      t.draw();
-      
+      if(t._elossa) {
+        t.draw();
+      }
+      else {
+        torni_it.remove();
+        continue;
+      }
+
       //käsketään sivupalkkia piirtämään tornin tiedot mikäli hiiri on sellaisen
       //päällä eikä olla rakentamassa uutta
       if((t.mouseOverlap() && temp_torni == null)

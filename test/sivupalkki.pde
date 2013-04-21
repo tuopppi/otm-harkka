@@ -99,7 +99,9 @@ class Sivupalkki {
     }
     else if(hiiri_napin_paalla_index == -1  && kentta.valittu_torni != null) { //myy-nappia painettu
         pelaaja.muuta_rahoja(kentta.valittu_torni.myyntiHinta());
-        //kentta.poistaValittuTorni(); :E ebin
+        kentta.valittu_torni._elossa = false;
+        kentta.valittu_torni = null;
+        infoTorni = null;
     }
   }
   
