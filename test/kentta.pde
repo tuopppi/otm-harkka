@@ -3,7 +3,7 @@ import java.util.*;
 class Kentta {
   private List<PVector> _reitti;
   private List<Ormy> _hirviot;
-  private Deque<Tower> _rakennetut;
+  private List<Tower> _rakennetut;
   private Tower temp_torni = null;
   private Tower valittu_torni = null;
 
@@ -33,7 +33,7 @@ class Kentta {
     ));
     
     _hirviot = new ArrayList<Ormy>();
-    _rakennetut = new ArrayDeque<Tower>();
+    _rakennetut = new ArrayList<Tower>();
 
     _hirvio_viesti_laskuri = new Laskuri();
     aalto_laskuri.setTime(2); // ensimmäinen aalto 2s päästä
@@ -91,6 +91,10 @@ class Kentta {
       _rakennetut.add(temp_torni);
       temp_torni = null; // "merkitse rakennetuksi"
     }
+  }
+
+  void poistaTorni(Tower tw) {
+    _rakennetut.remove(tw);
   }
 
   void draw() {
@@ -161,13 +165,7 @@ class Kentta {
     
     while(torni_it.hasNext()) { 
       Tower t = (Tower)torni_it.next();
-      if(t._elossa) {
-        t.draw();
-      }
-      else {
-        torni_it.remove();
-        continue;
-      }
+      t.draw();
 
       //käsketään sivupalkkia piirtämään tornin tiedot mikäli hiiri on sellaisen
       //päällä eikä olla rakentamassa uutta

@@ -99,7 +99,7 @@ class Sivupalkki {
     }
     else if(hiiri_napin_paalla_index == -1  && kentta.valittu_torni != null) { //myy-nappia painettu
         pelaaja.muuta_rahoja(kentta.valittu_torni.myyntiHinta());
-        kentta.valittu_torni._elossa = false;
+        kentta.poistaTorni(kentta.valittu_torni);
         kentta.valittu_torni = null;
         infoTorni = null;
     }

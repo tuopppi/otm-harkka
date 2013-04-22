@@ -16,7 +16,6 @@ public class Tower {
   float range;
   float dps; // damage per second
   int prev_shot;
-  boolean _elossa = true;
   
   static final int puna_idx = 1;
   static final int sini_idx = 2;
