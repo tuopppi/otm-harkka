@@ -93,6 +93,10 @@ class Kentta {
     }
   }
 
+  int getTaso() {
+    return taso;
+  }
+
   void poistaTorni(Tower tw) {
     _rakennetut.remove(tw);
   }

@@ -1,12 +1,16 @@
 class Pelaaja {
-  String _nimi;
-  int _rahat;
-  int _elamat;
+  private String _nimi;
+  private int _rahat;
+  private int _elamat;
   
-  Pelaaja(String nimi) {
-    _nimi = nimi;
+  Pelaaja() {
+    _nimi = "Pelaaja";
     _rahat = 1000;
-    _elamat = 5;
+    _elamat = 1;
+  }
+
+  void set_nimi(String nimi) {
+    _nimi = nimi;
   }
   
   String get_nimi() {

@@ -38,11 +38,15 @@ class Lopetusruutu {
     
     popMatrix();
     
-      fill(_ilmoitusvari);
-      textFont(valikkoFontti, 36);
-      textAlign(LEFT);
-      text("Delasit.", width/2-100, height/2-30);
-      textAlign(RIGHT);
+    fill(_ilmoitusvari);
+    textFont(valikkoFontti, 36);
+    textAlign(LEFT);
+
+    String aloitauusi = "Paina ENTER aloittaaksesi uuden pelin";
+    String loppuinfo = "Peli loppui. Pääsit tasolle " + Integer.toString(kentta.getTaso());
+
+    text(loppuinfo, width/2-textWidth(loppuinfo)/2, height/2-30);
+    text(aloitauusi, width/2-textWidth(aloitauusi)/2, height-30);
      
   }
 }

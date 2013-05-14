@@ -1,5 +1,5 @@
 //käytetään comicsanssia valikossa (ja vähän muuallakin)
-PFont valikkoFontti = createFont("Comic Sans MS", 60, true);
+PFont valikkoFontti = createFont("Trebuchet MS Bold", 60, true);
 
 OutPutStream striimi;
 Sivupalkki sivupalkki;
@@ -20,13 +20,22 @@ int tila;
 
 void setup() {
   size(800, 600);
-  tila = KysyNimi_tila;
+  tila = AloitaPeli_tila;
   striimi = new OutPutStream();
+  pelaaja = new Pelaaja(); // init_new_game tarvitsee "defaulttipelaajan"
+  init_new_game();
+  lopetusruutu = new Lopetusruutu(color(0,0,200), color(200,0,0));
+  nimilaatikko = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
+}
+
+void init_new_game() {
+  // lopetusruudussa kun painetaan ENTER alustetaan uusi peli samoilla pelaajatiedoilla
+  String exnimi = pelaaja.get_nimi();
+  pelaaja = new Pelaaja();
+  pelaaja.set_nimi(exnimi);
   aalto_laskuri = new Laskuri();
   kentta = new Kentta(color(0,0,200), color(200,0,0));
   sivupalkki = new Sivupalkki();
-  lopetusruutu = new Lopetusruutu(color(0,0,200), color(200,0,0));
-  nimilaatikko = new Textbox(width/2-100, height/2-30, "Pelaajan nimi");
 }
 
 void draw() {
@@ -36,7 +45,7 @@ void draw() {
     nimilaatikko.draw();
     if(nimilaatikko.is_ready()) {
       // Käyttäjä kirjoittanut nimensä ja painanut enteriä
-      pelaaja = new Pelaaja(nimilaatikko.get_data());
+      pelaaja.set_nimi(nimilaatikko.get_data());
       tila = TervehdiPelaajaa_tila;
     }
     break;
@@ -95,6 +104,11 @@ void keyPressed() {
       key = 0; // Estää ohjelmaa sulkeutumasta
       kentta.peruutaRakennus();
       break;
+    }
+  case Lopetusruutu_tila:
+    if(key == ENTER) {
+      init_new_game();
+      tila = AloitaPeli_tila;
     }
   }
 }
