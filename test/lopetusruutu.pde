@@ -4,9 +4,14 @@ class Lopetusruutu {
     
   private color _taustaVari;
   private color _ilmoitusvari;
+  private Hiscorelista _hiscorelista;
+  public boolean _hiscorePaivitetty;
+
   Lopetusruutu(color taustavari, color ilmoitusvari){
     _taustaVari = taustavari;
     _ilmoitusvari = ilmoitusvari;
+    _hiscorelista = new Hiscorelista(0);
+    _hiscorePaivitetty = false;
   }
   
   void draw() {   
@@ -43,10 +48,18 @@ class Lopetusruutu {
     textAlign(LEFT);
 
     String aloitauusi = "Paina ENTER aloittaaksesi uuden pelin";
-    String loppuinfo = "Peli loppui. Pääsit tasolle " + Integer.toString(kentta.getTaso());
+    String loppuinfo = "Peli loppui. \nPääsit tasolle " + Integer.toString(kentta.getTaso());
 
-    text(loppuinfo, width/2-textWidth(loppuinfo)/2, height/2-30);
-    text(aloitauusi, width/2-textWidth(aloitauusi)/2, height-30);
+    text(loppuinfo, width/2-textWidth(loppuinfo)/2+200, height/2-30);
+    text(aloitauusi, width/2-textWidth(aloitauusi)/2, height-150);
+
+    if(!_hiscorePaivitetty) {
+      _hiscorelista.paivitaLista(pelaaja.get_nimi(), pelaaja.get_pisteet());
+      _hiscorePaivitetty = true;
+    }
+
+    text("HISCORES", 10, 50);
+    _hiscorelista.piirraLista();
      
   }
 }
