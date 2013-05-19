@@ -14,11 +14,11 @@ class Ormy implements Comparable {
   private PVector _xy_position;
  
     
-  Ormy(List<PVector> reitti, int nopeus, color vari) {
+  Ormy(List<PVector> reitti, int nopeus, color vari, float hitpoints) {
     _reitti = reitti;
     _nopeus = nopeus;
     _vari = vari;
-    _hitpoints = 100.0;
+    _hitpoints = hitpoints;
   }
  
   void draw() {

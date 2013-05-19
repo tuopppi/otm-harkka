@@ -36,8 +36,8 @@ class Kentta {
     _rakennetut = new ArrayList<Tower>();
 
     _hirvio_viesti_laskuri = new Laskuri();
-    aalto_laskuri.setTime(2); // ensimmäinen aalto 2s päästä
-    _hirvio_viesti_laskuri.setTime(0); // näytä varoitusviesti
+    aalto_laskuri.setTime(5); // ensimmäinen aalto 2s päästä
+    _hirvio_viesti_laskuri.setTime(3); // näytä varoitusviesti
     aalto_laskuri.starttaaLaskuri();
     _hirvio_viesti_laskuri.starttaaLaskuri();
   }
@@ -117,7 +117,7 @@ class Kentta {
      * @_hirvio_viesti_laskuri asetetaan laukeamaan pari sekunttia ennen @laskuria
      * jolloin näytetään varoitusviesti. 
      */
-    if(aalto_laskuri.getTime() <= 0 || _hirviot.size() == 0) {
+    if(aalto_laskuri.getTime() <= 0 || _hirviot.size() == 0 && getTaso() > 1) {
       spawnaaHirviot(taso);
       sivupalkki.set_level(taso);
       taso += 1;
@@ -253,7 +253,7 @@ class Kentta {
 
   private void spawnaaHirviot(int maara) {
     for(int i = 0; i < maara; i++) {
-      _hirviot.add(new Ormy(_reitti, (int)random(200, 400), color(i*10 % 255)));
+      _hirviot.add(new Ormy(_reitti, (int)random(200, 400), color(i*10 % 255), 100.0+getTaso()));
     }
   }
   

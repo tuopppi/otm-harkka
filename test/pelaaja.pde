@@ -5,8 +5,8 @@ class Pelaaja {
   
   Pelaaja() {
     _nimi = "Pelaaja";
-    _rahat = 1000;
-    _elamat = 1;
+    _rahat = 650;
+    _elamat = 10;
   }
 
   void set_nimi(String nimi) {

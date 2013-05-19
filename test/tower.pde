@@ -25,7 +25,7 @@ public class Tower {
     _x = 0;
     _y = 0;
     range = 100.0;
-    dps = 100.0;
+    
     prev_shot = 0;
 
     switch(type) {
@@ -47,6 +47,8 @@ public class Tower {
     default:
       throw new Exception("Tuntematon tornityyppi"); 
     }
+
+    dps = 70 + hinta/2;
   }
   
 
@@ -68,7 +70,7 @@ public class Tower {
   
   void upgrade() {
     _level = _level + 1;
-    dps = dps + log(_level) * 5;
+    dps = dps + _level * 20;
     range = range + 20;
   }
   
@@ -89,14 +91,13 @@ public class Tower {
 
   /* Lasketaan paljonko päivitys seuraavalle tasolle maksaa */
   int upgradeHinta() {
-
-    return (int)(hinta*0.5*_level); //heitin laskukaavan iha päästäni :3
+    return (int)(hinta*1.0*_level);
   }
 
    /* Lasketaan paljonko päivitys seuraavalle tasolle maksaa */
   int myyntiHinta() {
 
-    return (int)(hinta*0.8*sqrt(_level)); //heitin laskukaavan iha päästäni :3
+    return (int)(hinta+0.5*_level);
   }
 
   /* Piirretään viiva tornista kohteeseen */

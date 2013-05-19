@@ -23,8 +23,8 @@ class Sivupalkki {
     
     //sivupalkin napit
     punaTykkiNappi = new Nappi(20, 150, 50, 50, color(255,0,0));
-    vihrTykkiNappi = new Nappi(20+55, 150, 50, 50, color(0,255,0));
-    siniTykkiNappi = new Nappi(20+110, 150, 50, 50, color(0,0,255));
+    vihrTykkiNappi = new Nappi(20+110, 150, 50, 50, color(0,255,0));
+    siniTykkiNappi = new Nappi(20+55, 150, 50, 50, color(0,0,255));
 
     paivitaNappi = new Nappi(0, 0, 140, 30, color(0,0,0), "Upgrade");
     myyNappi     = new Nappi(0, 0, 140, 30, color(0,0,0), "Myy torni");
@@ -160,7 +160,8 @@ class Sivupalkki {
       // Tulostetaan tiedot
       String[] kentat = { 
         "Nimi", infotw.nimi, 
-        "Ostohinta", Integer.toString(infotw.hinta) 
+        "Ostohinta", Integer.toString(infotw.hinta),
+        "DPS", Float.toString(round(infotw.dps)),
       };
       
       int offset_y = 220;
