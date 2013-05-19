@@ -227,6 +227,7 @@ class Sivupalkki {
     
     textFont(valikkoFontti, 60);
     text(_level, 100, 500);
+    pelaaja.set_pisteet(_level*100);
   }
     
   void asetaTorninInfonPiirto(Tower torni) {

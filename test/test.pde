@@ -20,7 +20,7 @@ int tila;
 
 void setup() {
   size(800, 600);
-  tila = AloitaPeli_tila;
+  tila = KysyNimi_tila;
   striimi = new OutPutStream();
   pelaaja = new Pelaaja(); // init_new_game tarvitsee "defaulttipelaajan"
   init_new_game();
@@ -36,6 +36,9 @@ void init_new_game() {
   aalto_laskuri = new Laskuri();
   kentta = new Kentta(color(0,0,200), color(200,0,0));
   sivupalkki = new Sivupalkki();
+  if(lopetusruutu != null) {
+    lopetusruutu._hiscorePaivitetty = false;
+  }
 }
 
 void draw() {
